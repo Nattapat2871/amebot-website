@@ -7,22 +7,34 @@ document.addEventListener('DOMContentLoaded', function () {
     // -------------------------------------------------------------------------
     // SECTION 1: CONFIGURATION & DATA
     // -------------------------------------------------------------------------
+    // รายการรูปภาพนี้ยังจำเป็นต้องใช้สำหรับ Wallpaper Cross-fade ใน runApp
     const imageUrls = ['asset/loading.gif', 'asset/amebot.png', 'asset/1.png', 'asset/2.png', 'asset/3.png', 'asset/4.png', 'asset/5.png', 'asset/6.png', 'asset/7.png', 'asset/8.png'];
     const translations = { 'EN': { 'nav_home': 'Home', 'nav_status': 'Status', 'nav_dashboard': 'Dashboard', 'nav_contact': 'Contact', 'lang_en': 'English', 'lang_th': 'ภาษาไทย', 'hero_title': 'Hello! this is AmeBot!', 'hero_description': 'Hello, this is AmeBot, or call me Ame. My duty is to manage the server system, manage every user and provide music and laughter, so let\'s meet!', 'hero_button': 'Contact our developers', 'bot': 'Bot', 'statistics': 'Statistics', 'developers': 'Developers', 'api': 'API' }, 'TH': { 'nav_home': 'หน้าหลัก', 'nav_status': 'สถานะ', 'nav_dashboard': 'แดชบอร์ด', 'nav_contact': 'ติดต่อ', 'lang_en': 'English', 'lang_th': 'ภาษาไทย', 'hero_title': 'สวัสดี! นี่คือ AmeBot!', 'hero_description': 'สวัสดี นี่คือ AmeBot หรือจะเรียกสั้นๆว่าเอเมะก็ได้ มีหน้าที่ดูแลระบบเซิร์ฟเวอร์ จัดการผู้ใช้ทุกคน และมอบเสียงเพลงกับเสียงหัวเราะ แล้วมาเจอกันนะ!', 'hero_button': 'ติดต่อผู้พัฒนาของเรา', 'bot': 'บอท', 'statistics': 'สถิติ', 'developers': 'ผู้พัฒนา', 'api': 'API' } };
-    const botApiEndpoints = [
-        { apiUrl: 'https://api.ame.nattapat2871.online/v1/user/1141443585737244682', role: 'Main Bot', description: 'The main bot responsible for server management and core functionalities.' },
-        { apiUrl: 'https://api.ame.nattapat2871.online/v1/user/1141441060044816405', role: 'API Bot' }, 
-        { apiUrl: 'https://api.ame.nattapat2871.online/v1/user/1376505105687253072', role: 'Music Bot', description: 'Dedicated to providing high-quality music streams 24/7.' }];
+    const botApiEndpoints = [{ apiUrl: 'https://api.ame.nattapat2871.online/v1/user/1141443585737244682', role: 'Main Bot', description: 'The main bot responsible for server management and core functionalities.' }, { apiUrl: 'https://api.ame.nattapat2871.online/v1/user/1141441060044816405', role: 'Music Bot', description: 'Dedicated to providing high-quality music streams 24/7.' }, { apiUrl: 'https://api.ame.nattapat2871.online/v1/user/1007310069718855790', role: 'Moderator Bot' }];
     const developerApiEndpoints = [
         { apiUrl: 'https://api.ame.nattapat2871.online/v1/user/1007237437627572275', role: 'Lead Developer & Founder' }
     ];
 
     // -------------------------------------------------------------------------
-    // SECTION 2: PRELOADER & APP INITIALIZATION
+    // SECTION 2: PRELOADER & APP INITIALIZATION - [แก้ไขส่วนนี้]
     // -------------------------------------------------------------------------
     const preloader = document.getElementById('preloader');
+
+    // [ใหม่] กำหนดเฉพาะรูปภาพที่จำเป็นต้องโหลดก่อน เพื่อให้เว็บแสดงผลเร็วขึ้น
+    const criticalImages = [
+        'asset/loading.gif', // รูป Animation ตอนโหลด
+        'asset/amebot.png',  // รูปตัวละครหลัก
+        'asset/1.png'        // Wallpaper รูปแรกสุดที่จะแสดง
+    ];
+
     function loadImage(url) { return new Promise((resolve) => { const image = new Image(); image.onload = () => resolve(image); image.onerror = () => { console.error(`Failed to load image: ${url}`); resolve(); }; image.src = url; }); }
-    Promise.all(imageUrls.map(loadImage)).then(() => { setTimeout(() => preloader.classList.add('preloader--hidden'), 250); runApp(); });
+
+    // [แก้ไข] เปลี่ยนมาใช้ criticalImages ในการรอโหลด
+    // ส่วน Wallpaper อื่นๆ จะถูกโหลดเบื้องหลังเมื่อถึงเวลาแสดงผล
+    Promise.all(criticalImages.map(loadImage)).then(() => {
+        setTimeout(() => preloader.classList.add('preloader--hidden'), 250);
+        runApp();
+    });
 
     // -------------------------------------------------------------------------
     // SECTION 3: MAIN APPLICATION LOGIC (runApp)
@@ -148,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (acc.type === 'github' && acc.name) {
                             socialsHTML += `<a href="https://github.com/${acc.name}" target="_blank" rel="noopener noreferrer" title="${acc.name}"><i class="fab fa-github"></i></a>`;
                         } else if (acc.type === 'domain' && acc.name) {
-                            socialsHTML += `<a href="https://://${acc.name}" target="_blank" rel="noopener noreferrer" title="${acc.name}"><i class="fas fa-globe"></i></a>`;
+                            socialsHTML += `<a href="https://${acc.name}" target="_blank" rel="noopener noreferrer" title="${acc.name}"><i class="fas fa-globe"></i></a>`;
                         }
                     });
                     socialsHTML += '</div>';
@@ -197,6 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 developerSection.appendChild(cardsContainer);
             });
         };
+
         const renderBotProfiles = () => {
             if (botSection) botSection.innerHTML = '<h2 class="section-title">Our Bots</h2><p style="color: #666; text-align: center;">Fetching bot data...</p>';
             fetchApiData(botApiEndpoints).then(bots => {
