@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmeBot</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
+</head>
+
+<body>
+
+    <div class="preloader" id="preloader">
+        <div class="preloader-content">
+            <img src="asset/loading.gif" alt="Loading Animation">
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="#" class="brand">
+                <img src="asset/amebot.png" alt="AmeBot Logo" class="brand-icon">
+                <span>AmeBot</span>
+            </a>
+        </div>
+        <div class="nav-center">
+            <ul class="nav-links">
+                <li><a href="#" data-translate-key="nav_home"><i
+                            class="fa-solid fa-house-chimney"></i><span>Home</span></a></li>
+                <li><a href="#" data-translate-key="nav_status"><i
+                            class="fa-solid fa-bolt-lightning"></i><span>Status</span></a></li>
+                <li><a href="#" data-translate-key="nav_dashboard" class="nav-link-disabled"><i
+                            class="fa-solid fa-gauge-high"></i><span>Dashboard</span></a></li>
+                <li><a href="#" data-translate-key="nav_contact"><i
+                            class="fa-solid fa-envelope"></i><span>Contact</span></a></li>
+            </ul>
+        </div>
+        <div class="nav-right">
+            <div class="language-switcher" id="language-switcher">
+                <button class="lang-button" id="lang-button">
+                    <img src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.2.1/flags/4x3/us.svg" alt="US Flag"
+                        class="flag-icon" id="current-flag">
+                    <span id="current-lang-text">EN</span>
+                    <i class="fas fa-caret-down"></i>
+                </button>
+                <div class="lang-dropdown" id="lang-dropdown">
+                    <a href="#" class="lang-option" data-lang="EN"
+                        data-flag-src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.2.1/flags/4x3/us.svg">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.2.1/flags/4x3/us.svg"
+                            alt="US Flag" class="flag-icon">
+                        <span data-translate-key="lang_en">English</span>
+                    </a>
+                    <a href="#" class="lang-option" data-lang="TH"
+                        data-flag-src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.2.1/flags/4x3/th.svg">
+                        <img src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.2.1/flags/4x3/th.svg"
+                            alt="Thai Flag" class="flag-icon">
+                        <span data-translate-key="lang_th">ภาษาไทย</span>
+                    </a>
+                </div>
+            </div>
+            <button class="hamburger" id="hamburger-menu">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="mobile-nav-links" id="mobile-menu"></div>
+
+    <section class="wallpaper-section">
+        <div class="wallpaper-bg" id="wallpaper-bg-1"></div>
+        <div class="wallpaper-bg" id="wallpaper-bg-2"></div>
+        <div class="wallpaper-overlay"></div>
+
+        <div class="wallpaper-content">
+            <div class="wallpaper-text">
+                <h1 data-translate-key="hero_title">Hello! this is AmeBot!</h1>
+                <p data-translate-key="hero_description">Hello, this is AmeBot, or call me Ame. My duty is to manage the
+                    server system, manage every user and provide music and laughter, so let's meet!</p>
+                <a href="#" class="cta-button">
+                    <i class="fa-solid fa-users"></i>
+                    <span data-translate-key="hero_button">Contact our developers</span>
+                </a>
+            </div>
+            <div class="wallpaper-image">
+                <img src="asset/amebot.png" alt="Bot Character Image">
+            </div>
+        </div>
+    </section>
+
+    <div class="secondary-nav">
+        <ul class="secondary-nav-links">
+            <li>
+                <a href="#statistics" class="secondary-nav-link active" data-translate-key="statistics">
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+                    <span>Statistics</span>
+                </a>
+            </li>
+            <li>
+                <a href="#bots" class="secondary-nav-link" data-translate-key="bot">
+                    <i class="fa-solid fa-robot"></i>
+                    <span>Bot</span>
+                </a>
+            </li>
+            <li>
+                <a href="#developers" class="secondary-nav-link" data-translate-key="developers">
+                    <i class="fa-solid fa-code"></i>
+                    <span>Developers</span>
+                </a>
+            </li>
+            <li>
+                <a href="#api" class="secondary-nav-link" data-translate-key="api">
+                    <i class="fa-solid fa-globe"></i>
+                    <span>API</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="content-wrapper">
+        <section id="bots" class="content-section">
+            <h2 class="section-title" data-translate-key="our_bots">Our Bots</h2>
+            <div id="bot-cards-container" class="profile-cards-container">
+            </div>
+        </section>
+
+        <section id="statistics" class="content-section">
+            <h2 class="section-title" data-translate-key="statistics">Statistics</h2>
+            <div id="statistics-cards-container" class="profile-cards-container">
+                <div class="stat-card">
+                    <i class="fa-solid fa-server stat-icon"></i>
+                    <h3 id="stat-servers-count" class="stat-number">...</h3>
+                    <p class="stat-title">Servers</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fa-solid fa-users stat-icon"></i>
+                    <h3 id="stat-users-count" class="stat-number">...</h3>
+                    <p class="stat-title">Users</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fa-solid fa-brain stat-icon"></i>
+                    <h3 id="stat-ai-interactions" class="stat-number">...</h3>
+                    <p class="stat-title">AI Interactions</p>
+                    <span id="stat-ai-tokens" class="stat-subtitle"></span>
+                </div>
+                <div class="stat-card">
+                    <i class="fa-solid fa-satellite-dish stat-icon"></i>
+                    <h3 id="stat-api-requests" class="stat-number">...</h3>
+                    <p class="stat-title">API Requests</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="developers" class="content-section">
+            <h2 class="section-title" data-translate-key="developers">Developers</h2>
+            <div id="developer-cards-container" class="profile-cards-container">
+            </div>
+        </section>
+
+        <section id="api" class="content-section">
+            <h2 class="section-title" data-translate-key="api">API</h2>
+            <div class="api-tester-container">
+                <div class="api-tester-left">
+                    <h3>Try It Yourself</h3>
+                    <p class="api-tester-desc">Enter a Discord User ID below to fetch data.</p>
+                    <input type="text" id="api-user-id-input" placeholder="Enter Discord User ID...">
+
+                    <div id="api-simple-display" class="api-simple-display hidden">
+                        <div id="api-profile-card" class="api-profile-card">
+                            <div class="api-profile-header">
+                                <div class="api-profile-avatar-wrapper">
+                                    <img id="api-profile-avatar-decoration" class="avatar-decoration" src="">
+                                    <img id="api-profile-avatar" src="" alt="Avatar" class="api-profile-avatar">
+                                    <div id="api-profile-status-indicator" class="status-indicator"></div>
+                                </div>
+                                <div class="api-profile-user-info">
+                                    <div class="user-line">
+                                        <span id="api-profile-username" class="username"></span>
+                                        <div id="api-profile-guild-tag" class="guild-tag"></div>
+                                        <div id="api-profile-badges" class="badges-container"></div>
+                                    </div>
+                                    <div id="api-profile-custom-status" class="custom-status"></div>
+                                </div>
+                            </div>
+                            <div id="api-profile-activity-card" class="api-profile-activity-card">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="api-tester-right">
+                    <pre><code id="api-json-output" class="language-json">{ "message": "Enter a User ID to start." }</code></pre>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+
+</html>
