@@ -50,9 +50,9 @@ document.addEventListener('DOMContentLoaded', function () {
             'api_description': 'API นี้ใช้สำหรับดึงข้อมูลผู้ใช้ใน Discord สามารถดึงข้อมูลได้ทุกอย่าง'
         }
     };
-    const botApiEndpoints = [{ apiUrl: 'https://api.ame.nattapat2871.online/v1/user/1141443585737244682', role: 'Main Bot', description: 'The main bot responsible for server management and core functionalities.' }, { apiUrl: 'https://api.ame.nattapat2871.online/v1/user/1141441060044816405', role: 'Music Bot', description: 'Dedicated to providing high-quality music streams 24/7.' }, { apiUrl: 'https://api.ame.nattapat2871.online/v1/user/1007310069718855790', role: 'Moderator Bot' }];
+    const botApiEndpoints = [{ apiUrl: 'https://api.ame.nattapat2871.online/v1/user/1141443585737244682', role: 'Main Bot & AI', description: 'The main bot responsible for server management and core functionalities.' }, { apiUrl: 'https://api.ame.nattapat2871.online/v1/user/1141441060044816405', role: 'API Bot' }, { apiUrl: 'https://api.ame.nattapat2871.online/v1/user/1376505105687253072', role: 'Music Bot', description: 'Dedicated to providing high-quality music streams 24/7.'}];
     const developerApiEndpoints = [
-        { apiUrl: 'https://api.ame.nattapat2871.online/v1/user/1007237437627572275', role: 'Lead Developer & Founder' }, { apiUrl: 'https://api.ame.nattapat2871.online/v1/user/546694854344704001', role: 'Consultant' }
+        { apiUrl: 'https://api.ame.nattapat2871.online/v1/user/1007237437627572275', role: 'Lead Developer & Founder' }, { apiUrl: 'https://api.ame.nattapat2871.online/v1/user/741501421936967722', role: 'Consultant' }
     ];
 
     // -------------------------------------------------------------------------

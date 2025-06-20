@@ -623,6 +623,7 @@ body.no-scroll {
     width: 60px;
     height: 60px;
     flex-shrink: 0;
+    bottom: 5px;
 }
 
 .profile-avatar-decoration,
