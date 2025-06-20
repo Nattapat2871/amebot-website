@@ -5,17 +5,20 @@
     <meta charset="UTF-8">
     <link rel="icon" href="asset/amebot.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ameBot - Contact</title>
+    <title data-translate-key="invite_page_title">Invite AmeBot</title>
+
+    <meta http-equiv="refresh"
+        content="2; url=https://discord.com/oauth2/authorize?client_id=1141443585737244682&permissions=8&integration_type=0&scope=bot+applications.commands">
 
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    </head>
+</head>
 
 <body>
 
     <nav class="navbar">
         <div class="nav-left">
-            <a href="#" class="brand">
+            <a href="/index.html" class="brand">
                 <img src="/asset/amebot.png" alt="Logo" class="brand-icon">
                 <span>AmeBot</span>
             </a>
@@ -60,56 +63,18 @@
             </button>
         </div>
     </nav>
-
     <div class="mobile-nav-links" id="mobile-menu"></div>
     <div class="overlay" id="overlay"></div>
 
 
-    <main style="min-height: calc(100vh - 105px); padding-top: 80px;">
-        <section class="contact-form-section">
-            <div class="contact-container">
-                <h2 data-translate-key="contact_heading">Contact Us</h2>
-                <p data-translate-key="contact_description">Have questions or feedback? Fill out the form below to send us a message via Discord.</p>
-
-                <form id="contact-form" action="https://formspree.io/f/xgvylapd" method="POST">
-
-                    <div class="form-group">
-                        <label for="username" data-translate-key="form_username_label">Username</label>
-                        <input type="text" id="username" name="username" data-translate-key="form_username_placeholder"
-                            placeholder="Enter Your Username" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email" data-translate-key="form_email_label">Email or Discord User ID</label>
-                        <input type="email" id="email" name="_replyto" data-translate-key="form_email_placeholder"
-                            placeholder="For us to reply (optional)">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="message" data-translate-key="form_message_label">Message</label>
-                        <textarea id="message" name="message" rows="6" data-translate-key="form_message_placeholder"
-                            placeholder="Write your message here..." required></textarea>
-                    </div>
-
-                    <button type="submit" class="submit-button" data-translate-key="form_submit_button">Send Message</button>
-
-                    <div id="form-status"></div>
-                </form>
-            </div>
-        </section>
-
-    </main>
-    <div id="success-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <div class="modal-icon-wrapper">
-                <i class="fa-solid fa-circle-check"></i>
-            </div>
-            <h2 data-translate-key="modal_success_title">Message Sent!</h2>
-            <p data-translate-key="modal_success_description">Thank you for your message. We will get back to you as soon as possible.</p>
+    <main class="main-content">
+        <div class="redirect-container">
+            <img src="/asset/amebot.png" alt="Bot Logo" class="redirect-logo">
+            <h1 data-translate-key="invite_heading">Inviting AmeBot</h1>
+            <p data-translate-key="invite_subheading">You will be redirected shortly...</p>
+            <div class="spinner"></div>
         </div>
-    </div>
-
+    </main>
 
     <footer class="site-footer">
         <div class="footer-copyright">

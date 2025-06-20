@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const activity = profile.activities.find(act => act.type === 0 || act.type === 2 || act.type === 3);
                     if (activity) {
                         const statusPrefix = getActivityStatusPrefix(activity.type);
-                        activityHTML = `<div class="profile-activity">${activity.assets?.large_image ? `<img src="${activity.assets.large_image}" alt="${activity.name}" class="activity-asset">` : ''}<div class="activity-info"><strong>${statusPrefix}${parseDiscordEmojis(activity.name)}</strong>${activity.details ? `<span>${parseDiscordEmojis(activity.details)}</span>` : ''}${activity.state ? `<span>${parseDiscordEmojis(activity.state)}</span>` : ''}</div></div>`;
+                        activityHTML = `<div class="profile-activity">${activity.assets?.large_image ? `<img src="${activity.assets.large_image}" alt="${activity.name}" class="activity-asset" onerror="this.onerror=null;this.src='asset/loading.gif';">` : ''}<div class="activity-info"><strong>${statusPrefix}${parseDiscordEmojis(activity.name)}</strong>${activity.details ? `<span>${parseDiscordEmojis(activity.details)}</span>` : ''}${activity.state ? `<span>${parseDiscordEmojis(activity.state)}</span>` : ''}</div></div>`;
                     }
 
                     const status = profile.discord_status.charAt(0).toUpperCase() + profile.discord_status.slice(1);
@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             activityCardEl.style.display = 'flex';
                             const statusPrefix = getActivityStatusPrefix(mainActivity.type);
                             const largeImgUrl = mainActivity.assets?.large_image?.startsWith('mp:external') ? `https://media.discordapp.net/${mainActivity.assets.large_image.replace('mp:', '')}` : mainActivity.assets?.large_image;
-                            const largeImg = largeImgUrl ? `<img src="${largeImgUrl}" alt="Activity" class="activity-icon">` : '<div class="activity-icon-placeholder">?</div>';
+                            const largeImg = largeImgUrl ? `<img src="${largeImgUrl}" alt="Activity" class="activity-icon" onerror="this.onerror=null;this.src='asset/loading.gif';">` : '<div class="activity-icon-placeholder">?</div>';
                             activityCardEl.innerHTML = `${largeImg}<div class="activity-details-container"><strong>${statusPrefix}${parseDiscordEmojis(mainActivity.name)}</strong>${mainActivity.details ? `<span>${parseDiscordEmojis(mainActivity.details)}</span>` : ''}${mainActivity.state ? `<span>${parseDiscordEmojis(mainActivity.state)}</span>` : ''}</div>`;
                         } else {
                             activityCardEl.style.display = 'none';
@@ -517,7 +517,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 link.addEventListener('click', (e) => { e.preventDefault(); updateTabContent(link); });
             });
         }
-        document.querySelectorAll('.nav-link-disabled, .invite-button-disabled').forEach(link => { link.addEventListener('click', (event) => event.preventDefault()); });
+        document.querySelectorAll('.nav-link-disabled').forEach(link => { link.addEventListener('click', (event) => event.preventDefault()); });
         if (hamburgerMenu) hamburgerMenu.addEventListener('click', (e) => { e.stopPropagation(); toggleMobileMenu(); });
         if (overlay) overlay.addEventListener('click', () => { if (mobileMenu && mobileMenu.classList.contains('show')) toggleMobileMenu(); });
         if (langButton) langButton.addEventListener('click', (e) => { e.stopPropagation(); langSwitcher.classList.toggle('open'); });
