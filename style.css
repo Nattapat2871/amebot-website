@@ -188,15 +188,18 @@ body.no-scroll {
 
 /* 1. สร้างชุดคำสั่งอนิเมชัน "pulse" */
 @keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05); /* ขยายใหญ่ขึ้น 5% */
-  }
-  100% {
-    transform: scale(1);
-  }
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+        /* ขยายใหญ่ขึ้น 5% */
+    }
+
+    100% {
+        transform: scale(1);
+    }
 }
 
 /* 2. ทำให้รูปภาพพร้อมสำหรับอนิเมชัน */
@@ -214,7 +217,8 @@ body.no-scroll {
 
 /* 3. เรียกใช้อนิเมชันเมื่อนำเมาส์ไปชี้ */
 .wallpaper-image img:hover {
-    animation: pulse 2s infinite; /* เรียกใช้ pulse animation วนซ้ำไปเรื่อยๆ ทุก 2 วินาที */
+    animation: pulse 2s infinite;
+    /* เรียกใช้ pulse animation วนซ้ำไปเรื่อยๆ ทุก 2 วินาที */
 }
 
 .invite-button {
@@ -1101,14 +1105,23 @@ body.no-scroll {
 }
 
 @media (max-width: 768px) {
+    .secondary-nav::-webkit-scrollbar {
+        display: none;
+        /* สำหรับ Chrome, Safari, Opera */
+    }
+
     .secondary-nav {
+        -ms-overflow-style: none;
+        /* สำหรับ IE and Edge */
+        scrollbar-width: none;
+        /* สำหรับ Firefox */
         padding: 0.5rem 1rem;
         overflow-x: auto;
     }
 
-    .secondary-nav-links {
+.secondary-nav-links {
         gap: 0.5rem;
-        padding-bottom: 0.5rem;
+        /* ไม่มี padding-bottom แล้ว */
     }
 
     .secondary-nav-link {
@@ -1193,6 +1206,31 @@ body.no-scroll {
 
 /* เมื่อคลิกที่กล่อง input ให้เส้นขอบเปลี่ยนเป็นสีฟ้า */
 #api-user-id-input:focus {
-    outline: none; /* เอา outline สีฟ้าของเบราว์เซอร์ออก */
+    outline: none;
+    /* เอา outline สีฟ้าของเบราว์เซอร์ออก */
     border-color: var(--accent-color);
+}
+
+
+.site-footer {
+    background-color: var(--bg-primary);
+    color: var(--text-secondary);
+    padding: 0.3rem;
+    text-align: center;
+    box-shadow: 0 -4px 12px -2px rgba(52, 152, 219, 0.2);
+}
+
+.footer-brand-link {
+    color: var(--text-primary);
+    /* สีตัวหนังสือเหมือนข้อความอื่น */
+    text-decoration: none;
+    /* เอาเส้นใต้ออก */
+    font-weight: 600;
+    /* ทำให้ตัวหนาเล็กน้อย */
+    transition: color 0.3s;
+}
+
+.footer-brand-link:hover {
+    color: rgb(1, 154, 214);
+    /* เปลี่ยนเป็นสีฟ้าเมื่อเมาส์ชี้ */
 }
