@@ -7,7 +7,6 @@
     <title>AmeBot</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css">
 </head>
 
@@ -78,17 +77,33 @@
         <div class="wallpaper-content">
             <div class="wallpaper-text">
                 <h1 data-translate-key="hero_title">Hello! this is AmeBot!</h1>
-                <p data-translate-key="hero_description">Hello, this is AmeBot, or call me Ame. My duty is to manage the
-                    server system, manage every user and provide music and laughter, so let's meet!</p>
-                <a href="#" class="cta-button">
-                    <i class="fa-solid fa-users"></i>
-                    <span data-translate-key="hero_button">Contact our developers</span>
-                </a>
+                <p data-translate-key="hero_description">Hello, my name is Rurina Ame. You can call me Nong Ame or Nong
+                    Fah. I am everyone's AI assistant and I am responsible for managing the server and ensuring the
+                    safety of all users. Nice to meet you!</p>
+                <div class="hero-buttons">
+                    <a href="#" class="cta-button">
+                        <i class="fa-solid fa-users"></i>
+                        <span data-translate-key="hero_button">Contact our developers</span>
+                    </a>
+                    <a href="#" target="_blank" class="cta-button secondary-cta">
+                        <i class="fa-brands fa-discord"></i>
+                        <span data-translate-key="hero_join_discord">Join Discord Server</span>
+                    </a>
+                </div>
             </div>
             <div class="wallpaper-image">
                 <img src="asset/amebot.png" alt="Bot Character Image">
+                <a href="#" target="_blank" class="invite-button invite-button-disabled">
+                    <i class="fa-solid fa-plus"></i>
+                    <span data-translate-key="hero_invite_bot">Invite Bot</span>
+                </a>
             </div>
         </div>
+    </section>
+
+    <section class="about">
+        <h1 id="about-title" data-translate-key="about_title">About</h1>
+        <h3 id="about-description" data-translate-key="about_description"></h3>
     </section>
 
     <div class="secondary-nav">
@@ -162,6 +177,8 @@
 
         <section id="api" class="content-section">
             <h2 class="section-title" data-translate-key="api">API</h2>
+            <p class="section-description" data-translate-key="api_description">API นี้ใช้สำหรับดึงข้อมูลผู้ใช้ใน
+                Discord สามารถดึงข้อมูลได้ทุกอย่าง</p>
             <div class="api-tester-container">
                 <div class="api-tester-left">
                     <h3>Try It Yourself</h3>
@@ -170,7 +187,7 @@
 
                     <div id="api-simple-display" class="api-simple-display hidden">
                         <div id="api-profile-card" class="api-profile-card">
-                            <div class="api-profile-header">
+                            <div id="api-profile-header" class="api-profile-header">
                                 <div class="api-profile-avatar-wrapper">
                                     <img id="api-profile-avatar-decoration" class="avatar-decoration" src="">
                                     <img id="api-profile-avatar" src="" alt="Avatar" class="api-profile-avatar">
