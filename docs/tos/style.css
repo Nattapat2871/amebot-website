@@ -25,6 +25,11 @@ body {
     --font-heading: 'Kanit', sans-serif;
 }
 
+::selection {
+ background-color: #ffffff; 
+ color: #474747; 
+}
+
 /* --- General Styles (จากไฟล์เดิม) --- */
 * {
     margin: 0;
