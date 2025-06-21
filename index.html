@@ -22,18 +22,18 @@
 
     <nav class="navbar">
         <div class="nav-left">
-            <a href="#" class="brand">
+            <a href="/" class="brand">
                 <img src="asset/amebot.png" alt="AmeBot Logo" class="brand-icon">
                 <span>AmeBot</span>
             </a>
         </div>
         <div class="nav-center">
             <ul class="nav-links">
-                <li><a href="#" data-translate-key="nav_home"><i
+                <li><a href="/" data-translate-key="nav_home"><i
                             class="fa-solid fa-house-chimney"></i><span>Home</span></a></li>
-                <li><a href="#" data-translate-key="nav_status"><i
+                <li><a href="/status" data-translate-key="nav_status"><i
                             class="fa-solid fa-bolt-lightning"></i><span>Status</span></a></li>
-                <li><a href="#" data-translate-key="nav_dashboard" class="nav-link-disabled"><i
+                <li><a href="" data-translate-key="nav_dashboard" class="nav-link-disabled"><i
                             class="fa-solid fa-gauge-high"></i><span>Dashboard</span></a></li>
                 <li><a href="/contact" data-translate-key="nav_contact"><i
                             class="fa-solid fa-envelope"></i><span>Contact</span></a></li>
@@ -48,13 +48,13 @@
                     <i class="fas fa-caret-down"></i>
                 </button>
                 <div class="lang-dropdown" id="lang-dropdown">
-                    <a href="#" class="lang-option" data-lang="EN"
+                    <a href="" class="lang-option" data-lang="EN"
                         data-flag-src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.2.1/flags/4x3/us.svg">
                         <img src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.2.1/flags/4x3/us.svg"
                             alt="US Flag" class="flag-icon">
                         <span data-translate-key="lang_en">English</span>
                     </a>
-                    <a href="#" class="lang-option" data-lang="TH"
+                    <a href="" class="lang-option" data-lang="TH"
                         data-flag-src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.2.1/flags/4x3/th.svg">
                         <img src="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/7.2.1/flags/4x3/th.svg"
                             alt="Thai Flag" class="flag-icon">
@@ -218,11 +218,18 @@
 
     <div class="overlay" id="overlay"></div>
 
-<footer class="site-footer">
-        <div class="footer-copyright">
-                <p>&copy; 2025 <a href="#" class="footer-brand-link">AmeBot#5990</a>. All Rights Reserved.</p>
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-copyright">
+                <p>&copy; 2025 <a href="/" class="footer-brand-link">AmeBot#5990</a>. All Rights Reserved.</p>
             </div>
+            <div class="footer-links">
+                <a href="/docs/tos">Terms of Service</a>
+                <a href="/docs/privacy">Privacy Policy</a>
+            </div>
+        </div>
     </footer>
+
     <script src="script.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
     <script

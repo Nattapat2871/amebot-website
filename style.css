@@ -48,7 +48,7 @@ body.no-scroll {
 /* --- Custom Cursor on Hover --- */
 a:not(.nav-link-disabled):hover,
 button:hover {
-    cursor: url('asset/curser-hold.png'), pointer;
+    cursor: url('asset/curser-hold.gif'), pointer;
 }
 
 
@@ -1206,15 +1206,41 @@ button:hover {
 
 .site-footer {
     background-color: #161616;
-    /* สีพื้นหลังเข้มกว่า bg-primary เล็กน้อย */
     color: var(--text-secondary);
-    padding: 1rem;
-    /* เพิ่ม padding */
-    text-align: center;
+    padding: 0.8rem 2rem;
     border-top: 1px solid var(--border-color);
-    /* เพิ่มเส้นขอบด้านบน */
-    box-shadow: none;
-    /* เอาเงาออก */
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-copyright p {
+    margin: 0;
+}
+
+.footer-links {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.footer-links a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.footer-links a:hover {
+    color: var(--text-primary);
+    text-decoration: underline;
 }
 
 .footer-brand-link {
