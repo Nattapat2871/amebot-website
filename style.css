@@ -9,28 +9,40 @@ body {
     cursor: url('asset/curser.png'), auto;
 }
 
-/* --- CSS Variables (Theme) --- */
+/* --- CSS Variables (Theme: Deep Blue & Neon) --- */
 :root {
-    --bg-primary: #1E1E1E;
-    --bg-glass: rgba(40, 40, 40, 0.5);
-    --bg-dropdown: #252525;
-    --bg-hover: #3A3A3A;
-    --text-primary: #FFFFFF;
-    --text-secondary: #B0B0B0;
+    /* เปลี่ยน Palette สีเป็นโทนน้ำเงิน-มืด สไตล์ Gaming/Tech */
+    --bg-primary: #0f172a; /* พื้นหลังหลัก (Dark Slate) */
+    --bg-glass: rgba(15, 23, 42, 0.85); /* Navbar แบบกระจกเข้ม */
+    --bg-dropdown: #1e293b;
+    --bg-hover: #334155;
+    
+    /* การ์ดแบบกระจก */
+    --bg-card: rgba(30, 41, 59, 0.6); 
+    --bg-card-border: rgba(56, 189, 248, 0.2); /* ขอบสีฟ้าจางๆ */
+    
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
     --text-white: #ffffff;
-    --text-preloader: #999;
-    --accent-color: #3498db;
-    --accent-hover: #2980b9;
-    --border-color: rgba(255, 255, 255, 0.1);
-    --border-mobile: #3A3A3A;
+    --text-preloader: #38bdf8;
+    
+    /* สี Accent หลัก (ฟ้าสว่าง) */
+    --accent-color: #38bdf8; 
+    --accent-hover: #0ea5e9;
+    --accent-glow: rgba(56, 189, 248, 0.5); /* สีเรืองแสง */
+    
+    --border-color: rgba(148, 163, 184, 0.2);
+    --border-mobile: #334155;
+    
     --font-main: 'Noto Sans Thai', sans-serif;
     --font-heading: 'Kanit', sans-serif;
 }
 
 ::selection {
- background-color: #ffffff; 
- color: #474747; 
+    background-color: var(--accent-color); 
+    color: #ffffff; 
 }
+
 /* --- General Styles --- */
 * {
     margin: 0;
@@ -39,8 +51,11 @@ body {
 }
 
 body {
-    background: var(--bg-primary);
-    /* เปลี่ยนเป็นสีพื้นหลังหลัก */
+    background-color: var(--bg-primary);
+    /* เพิ่ม Background Gradient ให้ดูมีมิติ */
+    background-image: radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.1) 0%, transparent 20%),
+                      radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 20%);
+    background-attachment: fixed;
     color: var(--text-primary);
     font-family: var(--font-main);
 }
@@ -51,12 +66,12 @@ body.no-scroll {
 
 /* --- Custom Cursor on Hover --- */
 a:not(.nav-link-disabled):hover,
-button:hover {
-    cursor: url('asset/curser-hold.gif'), pointer;
+button:hover,
+.clickable:hover {
+    cursor: url('asset/curser-hold.png'), pointer; /* แก้ชื่อไฟล์ cursor ให้ตรง */
 }
 
-
-/* --- Preloader Styles --- */
+/* --- Preloader Styles (สวยขึ้น) --- */
 .preloader {
     position: fixed;
     top: 0;
@@ -86,6 +101,8 @@ button:hover {
     width: 200px;
     height: auto;
     border-radius: 16px;
+    /* เพิ่มแสงรอบรูปตอนโหลด */
+    box-shadow: 0 0 30px var(--accent-glow);
 }
 
 .preloader-content p {
@@ -94,6 +111,7 @@ button:hover {
     font-family: var(--font-heading);
     font-size: 1.8rem;
     letter-spacing: 2px;
+    text-shadow: 0 0 10px var(--accent-glow); /* ตัวหนังสือเรืองแสง */
 }
 
 /* --- Wallpaper Section --- */
@@ -116,8 +134,9 @@ button:hover {
     height: 100%;
     background-size: cover;
     background-position: center;
-    filter: blur(4px);
+    filter: blur(4px) brightness(0.6); /* ปรับให้มืดลงนิดนึงเพื่อให้ตัวหนังสือเด่น */
     transition: opacity 1.5s ease-in-out;
+    transform: scale(1.1); /* ขยายหน่อยกันขอบขาวเวลาเบลอ */
 }
 
 .wallpaper-overlay {
@@ -126,7 +145,8 @@ button:hover {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.479);
+    /* Gradient สวยๆ ทับภาพ */
+    background: linear-gradient(to bottom, rgba(15, 23, 42, 0.4), var(--bg-primary));
     z-index: 2;
 }
 
@@ -138,6 +158,13 @@ button:hover {
     gap: 4rem;
     width: 100%;
     max-width: 1100px;
+    /* Animation ให้เนื้อหาลอยขึ้นมา */
+    animation: fadeInUp 1s ease-out;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .wallpaper-text {
@@ -150,6 +177,8 @@ button:hover {
     margin-bottom: 1rem;
     color: var(--text-white);
     font-weight: 700;
+    /* Text Shadow เรืองแสง */
+    text-shadow: 0 0 20px rgba(56, 189, 248, 0.6);
 }
 
 .wallpaper-text p {
@@ -157,6 +186,11 @@ button:hover {
     color: var(--text-secondary);
     line-height: 1.7;
     margin-bottom: 2rem;
+    background: rgba(0,0,0,0.3); /* พื้นหลังจางๆ ให้อ่านง่าย */
+    padding: 15px;
+    border-radius: 12px;
+    border-left: 3px solid var(--accent-color);
+    backdrop-filter: blur(5px);
 }
 
 .hero-buttons {
@@ -167,7 +201,7 @@ button:hover {
 
 .cta-button {
     font-family: var(--font-heading);
-    background-color: var(--accent-color);
+    background: linear-gradient(135deg, var(--accent-color), #0284c7); /* Gradient ปุ่ม */
     color: var(--text-white);
     padding: 12px 24px;
     text-decoration: none;
@@ -176,19 +210,23 @@ button:hover {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    transition: background-color 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
 }
 
 .cta-button:hover {
-    background-color: var(--accent-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(56, 189, 248, 0.6);
 }
 
 .secondary-cta {
-    background-color: #5865F2;
+    background: #5865F2; /* Discord Color */
+    box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
 }
 
 .secondary-cta:hover {
     background-color: #4752C4;
+    box-shadow: 0 8px 25px rgba(88, 101, 242, 0.6);
 }
 
 .wallpaper-image {
@@ -199,39 +237,36 @@ button:hover {
     align-items: center;
 }
 
-/* 1. สร้างชุดคำสั่งอนิเมชัน "pulse" */
 @keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.05);
-        /* ขยายใหญ่ขึ้น 5% */
-    }
-
-    100% {
-        transform: scale(1);
-    }
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
 
-/* 2. ทำให้รูปภาพพร้อมสำหรับอนิเมชัน */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
 .wallpaper-image img {
     max-width: 300px;
     width: 100%;
     border-radius: 20px;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(255, 255, 255, 0.05);
     padding: 0.5rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    /* เพิ่ม transition เพื่อให้การเปลี่ยนแปลงอื่นๆ (ถ้ามี) ดูนุ่มนวล */
+    box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
     transition: transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-
-/* 3. เรียกใช้อนิเมชันเมื่อนำเมาส์ไปชี้ */
 .wallpaper-image img:hover {
     animation: pulse 2s infinite;
-    /* เรียกใช้ pulse animation วนซ้ำไปเรื่อยๆ ทุก 2 วินาที */
+}
+
+/* ทำให้รูป Ame ลอยๆ ตลอดเวลา */
+.wallpaper-image {
+    animation: float 6s ease-in-out infinite;
 }
 
 .invite-button {
@@ -246,15 +281,17 @@ button:hover {
     align-items: center;
     gap: 0.5rem;
     margin-top: 1.5rem;
-    border: 2px solid rgb(255, 255, 255);
+    border: 2px solid var(--text-white);
     backdrop-filter: blur(10px);
-    opacity: 0.6;
-    transition: transform 0.2s ease-in-out;
+    opacity: 0.8;
+    transition: all 0.3s ease-in-out;
 }
 
-/* เพิ่ม :hover เพื่อให้ซูมเมื่อเมาส์ชี้ */
 .invite-button:hover {
     transform: scale(1.05);
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
 }
 
 /* --- Navbar Styling --- */
@@ -274,6 +311,7 @@ button:hover {
     z-index: 1000;
     border-bottom: 1px solid var(--border-color);
     font-family: var(--font-heading);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
 
 .nav-left .brand {
@@ -284,6 +322,7 @@ button:hover {
     font-weight: bold;
     color: var(--text-white);
     text-decoration: none;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
 }
 
 .brand-icon {
@@ -306,12 +345,12 @@ button:hover {
 }
 
 .nav-center .nav-links a {
-    color: var(--text-white);
+    color: var(--text-secondary); /* เปลี่ยนสีปกติให้อ่อนลงหน่อย */
     text-decoration: none;
     font-size: 1rem;
     padding: 5px 10px;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -319,6 +358,8 @@ button:hover {
 
 .nav-center .nav-links a:hover {
     background-color: rgba(255, 255, 255, 0.1);
+    color: var(--accent-color); /* Hover แล้วเป็นสีฟ้า */
+    text-shadow: 0 0 5px var(--accent-glow);
 }
 
 .nav-right {
@@ -346,6 +387,11 @@ button:hover {
     gap: 0.5rem;
     cursor: pointer;
     font-size: 1rem;
+    transition: color 0.3s;
+}
+
+.lang-button:hover {
+    color: var(--accent-color);
 }
 
 .flag-icon {
@@ -359,10 +405,11 @@ button:hover {
     right: 0;
     background-color: var(--bg-dropdown);
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     width: 150px;
     overflow: hidden;
     z-index: 1001;
+    border: 1px solid var(--border-color);
 }
 
 .language-switcher.open .lang-dropdown {
@@ -382,6 +429,7 @@ button:hover {
 
 .lang-option:hover {
     background-color: var(--bg-hover);
+    color: var(--accent-color);
 }
 
 .hamburger {
@@ -402,6 +450,7 @@ button:hover {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
     z-index: 998;
+    backdrop-filter: blur(5px);
 }
 
 .overlay.show {
@@ -410,7 +459,7 @@ button:hover {
 
 .mobile-nav-links {
     position: fixed;
-    background-color: var(--bg-primary);
+    background-color: var(--bg-primary); /* ใช้สีเดียวกับพื้นหลัง */
     top: 55px;
     right: 0;
     width: 250px;
@@ -446,6 +495,7 @@ button:hover {
 
 .mobile-nav-links a:hover {
     background-color: var(--bg-hover);
+    color: var(--accent-color);
 }
 
 /* --- About Section --- */
@@ -460,10 +510,11 @@ button:hover {
     font-size: 2.5rem;
     color: var(--text-white);
     margin-bottom: 1rem;
+    text-shadow: 0 0 15px rgba(0,0,0,0.5);
 }
 
 .about h3 {
-    font-weight: 400;
+    font-weight: 300;
     color: var(--text-secondary);
     max-width: 700px;
     margin: 0 auto;
@@ -482,25 +533,23 @@ button:hover {
 
 .secondary-nav-links {
     list-style: none;
-    background-color: rgba(0, 0, 0, 0.2);
-    /* ทำให้พื้นหลังโปร่งแสง */
+    background-color: rgba(15, 23, 42, 0.7); /* พื้นหลังเข้มขึ้น */
+    backdrop-filter: blur(10px);
     padding: 0.5rem;
     margin: 0;
     display: inline-flex;
     align-items: center;
     gap: 1rem;
-    /* ลด gap เล็กน้อย */
     border: 1px solid var(--border-color);
-    /* ใช้ border สีใหม่ */
-    border-radius: 12px;
+    border-radius: 50px; /* ทำให้มนๆ สวยกว่า */
 }
 
 .secondary-nav-link {
     color: var(--text-secondary);
     text-decoration: none;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
     font-family: var(--font-heading);
     cursor: pointer;
     display: inline-flex;
@@ -515,8 +564,9 @@ button:hover {
 
 .secondary-nav-link.active {
     background-color: var(--accent-color);
-    color: var(--text-white);
-    font-weight: 500;
+    color: #0f172a; /* ตัวหนังสือสีเข้มตัดกับพื้นฟ้า */
+    font-weight: 600;
+    box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .content-wrapper {
@@ -576,6 +626,19 @@ button:hover {
     color: var(--text-white);
     text-align: center;
     margin-bottom: 2.5rem;
+    text-shadow: 0 0 10px var(--accent-glow);
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 4px;
+    background: var(--accent-color);
+    margin: 10px auto;
+    border-radius: 2px;
+    box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .section-description {
@@ -596,24 +659,27 @@ button:hover {
     margin: 0 auto;
 }
 
+/* --- Profile Card Style Upgrade --- */
 .profile-card {
-    background-color: rgba(40, 40, 40, 0.3);
+    background-color: var(--bg-card); /* ใช้สีแบบ Glass */
     backdrop-filter: blur(10px);
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
+    border-radius: 16px; /* มุมมนขึ้น */
+    border: 1px solid var(--bg-card-border);
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s;
     display: flex;
     flex-direction: column;
     width: 320px;
 }
 
 .profile-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    border-color: var(--accent-color); /* Hover แล้วขอบเรืองแสง */
 }
 
 .profile-card-header {
+    background: linear-gradient(to bottom, rgba(255,255,255,0.03), transparent);
     position: relative;
     display: flex;
     align-items: center;
@@ -652,6 +718,7 @@ button:hover {
     height: 60px;
     border-radius: 50%;
     object-fit: cover;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
 }
 
 .profile-info {
@@ -680,7 +747,9 @@ button:hover {
 
 .profile-role {
     font-size: 0.9rem;
-    color: var(--text-secondary);
+    color: var(--accent-color); /* สี Role สว่างขึ้น */
+    text-transform: uppercase;
+    font-weight: 500;
 }
 
 .profile-card-body {
@@ -700,6 +769,7 @@ button:hover {
     line-height: 1.6;
     margin: 0 0 1rem 0;
     word-break: break-word;
+    color: var(--text-secondary);
 }
 
 .profile-custom-status {
@@ -711,16 +781,17 @@ button:hover {
     font-size: 0.9rem;
     text-align: center;
     word-break: break-word;
+    border: 1px solid var(--border-color);
 }
 
 .profile-status {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 4px 10px;
+    padding: 4px 12px;
     border-radius: 20px;
     font-size: 0.8rem;
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 15px;
 }
 
@@ -730,25 +801,11 @@ button:hover {
     margin-top: 1rem;
 }
 
-.profile-status.Online {
-    background-color: rgba(46, 204, 113, 0.15);
-    color: #2ecc71;
-}
-
-.profile-status.Idle {
-    background-color: rgba(241, 196, 15, 0.15);
-    color: #f1c40f;
-}
-
-.profile-status.Offline {
-    background-color: rgba(149, 165, 166, 0.15);
-    color: #95a5a6;
-}
-
-.profile-status.Dnd {
-    background-color: rgba(237, 66, 69, 0.15);
-    color: #ed4245;
-}
+/* ปรับสี Status ให้สดใสแบบ Neon */
+.profile-status.Online { background-color: rgba(46, 204, 113, 0.15); color: #4ade80; border: 1px solid rgba(46, 204, 113, 0.3); }
+.profile-status.Idle { background-color: rgba(241, 196, 15, 0.15); color: #facc15; border: 1px solid rgba(241, 196, 15, 0.3); }
+.profile-status.Offline { background-color: rgba(149, 165, 166, 0.15); color: #94a3b8; border: 1px solid rgba(149, 165, 166, 0.3); }
+.profile-status.Dnd { background-color: rgba(237, 66, 69, 0.15); color: #f87171; border: 1px solid rgba(237, 66, 69, 0.3); }
 
 .profile-socials {
     display: flex;
@@ -762,12 +819,20 @@ button:hover {
 .profile-socials a {
     color: var(--text-secondary);
     font-size: 1.5rem;
-    transition: color 0.2s ease, transform 0.2s ease;
+    transition: all 0.2s ease;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 }
 
 .profile-socials a:hover {
-    color: var(--accent-color);
+    color: #fff;
+    background-color: var(--accent-color);
     transform: translateY(-3px);
+    box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .profile-activity {
@@ -778,6 +843,7 @@ button:hover {
     padding: 0.75rem;
     border-radius: 8px;
     min-height: 64px;
+    border: 1px solid var(--border-color);
 }
 
 .activity-asset {
@@ -798,30 +864,51 @@ button:hover {
 }
 
 .activity-info strong {
-    color: var(--text-primary);
+    color: var(--text-white);
     font-weight: 600;
 }
 
+/* --- Stat Card Upgrade --- */
 .stat-card {
-    background-color: rgba(40, 40, 40, 0.3);
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.8));
     backdrop-filter: blur(10px);
-    border-radius: 12px;
+    border-radius: 16px;
     border: 1px solid var(--border-color);
     padding: 2rem;
     width: 280px;
     text-align: center;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--accent-color);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
 }
 
 .stat-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.stat-card:hover::before {
+    transform: scaleX(1);
 }
 
 .stat-icon {
     font-size: 3.5rem;
     color: var(--accent-color);
     margin-bottom: 1rem;
+    text-shadow: 0 0 15px var(--accent-glow);
 }
 
 .stat-number {
@@ -841,20 +928,22 @@ button:hover {
 
 .stat-subtitle {
     font-size: 0.85rem;
-    color: #999;
+    color: #94a3b8;
 }
 
+/* --- API Tester Container --- */
 .api-tester-container {
-    background-color: rgba(40, 40, 40, 0.3);
+    background-color: var(--bg-card);
     backdrop-filter: blur(10px);
     display: flex;
     gap: 2rem;
     padding: 2rem;
-    border-radius: 12px;
+    border-radius: 16px;
     border: 1px solid var(--border-color);
     max-width: 1200px;
     margin: 0 auto;
     align-items: flex-start;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 .api-tester-container.loading {
@@ -874,20 +963,21 @@ button:hover {
 }
 
 .api-tester-right pre[class*="language-"] {
-    background-color: #161616;
-    /* ทำให้เข้มกว่าพื้นหลังเล็กน้อย */
+    background-color: #0b1120 !important; /* พื้นหลัง Code ดำเข้ม */
     padding: 1.5rem;
-    border-radius: 8px;
+    border-radius: 12px;
     margin: 0;
     height: 400px;
     overflow-y: auto;
     border: 1px solid var(--border-color);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
 }
 
 .api-tester-left h3 {
     font-family: var(--font-heading);
     font-size: 1.75rem;
     margin-bottom: 0.5rem;
+    color: var(--accent-color);
 }
 
 .api-tester-desc {
@@ -901,13 +991,20 @@ button:hover {
     max-width: 350px;
     padding: 12px;
     font-size: 1rem;
-    background-color: rgba(0, 0, 0, 0.3);
-    border: 1px solid #555;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     color: var(--text-primary);
     font-family: var(--font-main);
     margin-bottom: 1.5rem;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+#api-user-id-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-glow);
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 #api-json-output {
@@ -959,21 +1056,10 @@ button:hover {
     border: 3px solid #252525;
 }
 
-.status-indicator.online {
-    background-color: #2ecc71;
-}
-
-.status-indicator.idle {
-    background-color: #f1c40f;
-}
-
-.status-indicator.dnd {
-    background-color: #ed4245;
-}
-
-.status-indicator.offline {
-    background-color: #95a5a6;
-}
+.status-indicator.online { background-color: #2ecc71; }
+.status-indicator.idle { background-color: #f1c40f; }
+.status-indicator.dnd { background-color: #ed4245; }
+.status-indicator.offline { background-color: #95a5a6; }
 
 .api-profile-user-info {
     position: relative;
@@ -995,7 +1081,6 @@ button:hover {
     font-weight: 600;
     color: var(--text-white);
     margin-top: 10px;
-
 }
 
 .guild-tag {
@@ -1022,7 +1107,6 @@ button:hover {
     align-items: center;
     gap: 0.3rem;
     flex-wrap: wrap;
-
 }
 
 .badge-image {
@@ -1071,6 +1155,7 @@ button:hover {
     font-size: 0.9rem;
 }
 
+/* --- Responsive & Scrollbar --- */
 @media (max-width: 992px) {
     .nav-center .nav-links {
         display: none;
@@ -1105,7 +1190,6 @@ button:hover {
     .hero-buttons {
         justify-content: center;
     }
-
 }
 
 @media (max-width: 768px) {
@@ -1203,13 +1287,8 @@ button:hover {
     color: rgba(255, 255, 255, 0.6);
 }
 
-#api-user-id-input:focus {
-    outline: none;
-    border-color: var(--accent-color);
-}
-
 .site-footer {
-    background-color: #161616;
+    background-color: #0b1120; /* ปรับให้เข้มเข้ากับธีมใหม่ */
     color: var(--text-secondary);
     padding: 0.8rem 2rem;
     border-top: 1px solid var(--border-color);

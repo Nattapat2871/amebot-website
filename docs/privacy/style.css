@@ -1,4 +1,4 @@
-/* --- Font Imports (จากไฟล์เดิม) --- */
+/* --- Font Imports --- */
 @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap');
 
@@ -6,31 +6,43 @@
 html,
 body {
     overflow-x: hidden;
+    cursor: url('asset/curser.png'), auto; /* เพิ่ม Cursor น่ารักๆ */
 }
 
-/* --- CSS Variables (Theme จากไฟล์เดิม) --- */
+/* --- CSS Variables (Theme: Deep Blue & Neon) --- */
 :root {
-    --bg-primary: #1e1e1e;
-    --bg-glass: rgba(28, 28, 28, 0.7);
-    --bg-dropdown: #333;
-    --bg-hover: #444;
-    --text-primary: #eee;
-    --text-secondary: #ccc;
+    /* เปลี่ยน Palette สีเป็นโทนน้ำเงิน-มืด สไตล์ Tech */
+    --bg-primary: #0f172a; /* พื้นหลังหลัก (Dark Slate) */
+    --bg-glass: rgba(15, 23, 42, 0.85); /* Navbar แบบกระจกเข้ม */
+    --bg-dropdown: #1e293b;
+    --bg-hover: #334155;
+    
+    /* การ์ดแบบกระจก */
+    --bg-card: rgba(30, 41, 59, 0.6); 
+    --bg-card-border: rgba(56, 189, 248, 0.2); /* ขอบสีฟ้าจางๆ */
+    
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
     --text-white: #ffffff;
-    --accent-color: #3498db;
-    --accent-hover: #2980b9;
-    --border-color: rgba(68, 68, 68, 0.7);
-    --border-mobile: #444;
+    
+    /* สี Accent หลัก (ฟ้าสว่าง) */
+    --accent-color: #38bdf8; 
+    --accent-hover: #0ea5e9;
+    --accent-glow: rgba(56, 189, 248, 0.5); /* สีเรืองแสง */
+    
+    --border-color: rgba(148, 163, 184, 0.2);
+    --border-mobile: #334155;
+    
     --font-main: 'Noto Sans Thai', sans-serif;
     --font-heading: 'Kanit', sans-serif;
 }
 
 ::selection {
- background-color: #ffffff; 
- color: #474747; 
+    background-color: var(--accent-color); 
+    color: #ffffff; 
 }
 
-/* --- General Styles (จากไฟล์เดิม) --- */
+/* --- General Styles --- */
 * {
     margin: 0;
     padding: 0;
@@ -39,6 +51,10 @@ body {
 
 body {
     background-color: var(--bg-primary);
+    /* เพิ่ม Background Gradient ให้ดูมีมิติ */
+    background-image: radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.1) 0%, transparent 20%),
+                      radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.1) 0%, transparent 20%);
+    background-attachment: fixed; /* ให้พื้นหลังนิ่งเวลาเลื่อน */
     color: var(--text-primary);
     font-family: var(--font-main);
     display: flex;
@@ -48,22 +64,46 @@ body {
 
 main.main-content {
     flex-grow: 1;
-    padding-top: 55px; /* เพิ่ม padding เท่ากับความสูงของ navbar */
+    padding-top: 55px;
+    position: relative;
+    z-index: 1;
 }
 
 body.no-scroll {
     overflow: hidden;
 }
 
-/* --- Navbar Styling (จากไฟล์เดิม) --- */
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--bg-dropdown);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-color);
+}
+
+/* --- Custom Cursor on Hover --- */
+a:not(.nav-link-disabled):hover,
+button:hover {
+    cursor: url('asset/curser-hold.png'), pointer;
+}
+
+/* --- Navbar Styling --- */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: var(--bg-glass);
     backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     color: var(--text-white);
-    height: 55px;
+    height: 60px; /* เพิ่มความสูงนิดหน่อยให้ดูไม่อึดอัด */
     padding: 0 2rem;
     position: fixed;
     top: 0;
@@ -72,6 +112,7 @@ body.no-scroll {
     z-index: 1000;
     border-bottom: 1px solid var(--border-color);
     font-family: var(--font-heading);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
 }
 
 .nav-left .brand {
@@ -79,16 +120,18 @@ body.no-scroll {
     align-items: center;
     gap: 0.75rem;
     font-size: 1.5rem;
-    font-weight: bold;
+    font-weight: 700;
     color: var(--text-white);
     text-decoration: none;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
 }
 
 .brand-icon {
-    height: 35px;
-    width: 35px;
+    height: 38px;
+    width: 38px;
     border-radius: 8px;
     object-fit: cover;
+    box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .nav-center {
@@ -104,19 +147,21 @@ body.no-scroll {
 }
 
 .nav-center .nav-links a {
-    color: var(--text-white);
+    color: var(--text-secondary);
     text-decoration: none;
     font-size: 1rem;
-    padding: 5px 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     gap: 0.5rem;
 }
 
 .nav-center .nav-links a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--accent-color);
+    text-shadow: 0 0 5px var(--accent-glow);
 }
 
 .nav-right {
@@ -130,24 +175,34 @@ body.no-scroll {
     cursor: not-allowed;
 }
 
+/* Language Switcher */
 .language-switcher {
     position: relative;
 }
 
 .lang-button {
     font-family: var(--font-heading);
-    background: none;
-    border: none;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
     color: var(--text-white);
     display: flex;
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.lang-button:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
 }
 
 .flag-icon {
     width: 22px;
+    border-radius: 2px;
 }
 
 .lang-dropdown {
@@ -157,14 +212,21 @@ body.no-scroll {
     right: 0;
     background-color: var(--bg-dropdown);
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     width: 150px;
     overflow: hidden;
     z-index: 1001;
+    border: 1px solid var(--border-color);
 }
 
 .language-switcher.open .lang-dropdown {
     display: block;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .lang-option {
@@ -180,6 +242,7 @@ body.no-scroll {
 
 .lang-option:hover {
     background-color: var(--bg-hover);
+    color: var(--accent-color);
 }
 
 .hamburger {
@@ -191,6 +254,7 @@ body.no-scroll {
     cursor: pointer;
 }
 
+/* Mobile Menu & Overlay */
 .overlay {
     display: none;
     position: fixed;
@@ -200,6 +264,7 @@ body.no-scroll {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
     z-index: 998;
+    backdrop-filter: blur(4px);
 }
 
 .overlay.show {
@@ -238,21 +303,19 @@ body.no-scroll {
     font-size: 1.1rem;
 }
 
-.mobile-nav-links a:last-child {
-    border-bottom: none;
-}
-
 .mobile-nav-links a:hover {
     background-color: var(--bg-hover);
+    color: var(--accent-color);
 }
 
 
-/* --- Footer (จากไฟล์เดิม) --- */
+/* --- Footer --- */
 .site-footer {
-    background-color: #161616;
+    background-color: #0b1120; /* Darker footer */
     color: var(--text-secondary);
-    padding: 0.8rem 2rem;
+    padding: 2rem;
     border-top: 1px solid var(--border-color);
+    margin-top: auto;
 }
 
 .footer-content {
@@ -283,8 +346,9 @@ body.no-scroll {
 }
 
 .footer-links a:hover {
-    color: var(--text-primary);
+    color: var(--accent-color);
     text-decoration: underline;
+    text-shadow: 0 0 5px var(--accent-glow);
 }
 
 .footer-brand-link {
@@ -299,7 +363,7 @@ body.no-scroll {
 }
 
 
-/* --- Responsive Styles (จากไฟล์เดิม) --- */
+/* --- Responsive Styles --- */
 @media (max-width: 992px) {
     .nav-center .nav-links {
         display: none;
@@ -315,49 +379,99 @@ body.no-scroll {
 }
 
 /* ========================================================== */
-/* --- Styles for Terms of Service Content (ส่วนที่สร้างใหม่) --- */
+/* --- Styles for ToS/Privacy Content (ส่วนไฮไลท์สำคัญ) --- */
 /* ========================================================== */
 
 .tos-container {
-    max-width: 800px; /* จำกัดความกว้างให้อ่านง่าย */
-    margin: 2rem auto; /* เว้นระยะห่างบนล่าง และจัดกลาง */
-    padding: 2.5rem;
-    background-color: rgba(44, 44, 44, 0.5); /* สีพื้นหลังเข้มแต่สว่างกว่า body เล็กน้อย */
-    border-radius: 12px;
-    border: 1px solid var(--border-color);
+    max-width: 800px; 
+    margin: 3rem auto;
+    padding: 3rem;
+    
+    /* Glassmorphism Effect */
+    background-color: var(--bg-card); /* พื้นหลังโปร่งแสง */
+    backdrop-filter: blur(12px);      /* เบลอฉากหลัง */
+    -webkit-backdrop-filter: blur(12px);
+    
+    border-radius: 20px; /* มุมมนขึ้น */
+    border: 1px solid var(--bg-card-border); /* ขอบสีฟ้าจางๆ */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3); /* เงาลอยๆ */
+    
+    /* Animation ตอนเปิดหน้าเว็บ */
+    animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .tos-header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border-mobile);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .tos-header h1 {
     font-family: var(--font-heading);
-    font-size: 2.5rem;
-    color: var(--text-white);
+    font-size: 2.8rem;
     margin-bottom: 0.5rem;
+    font-weight: 700;
+    
+    /* Gradient Text Header */
+    background: linear-gradient(to right, #ffffff, var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(56, 189, 248, 0.3);
 }
 
 .tos-header p {
     color: var(--text-secondary);
     font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
 }
 
 .tos-section h2 {
     font-family: var(--font-heading);
     font-size: 1.8rem;
-    color: var(--accent-color);
-    margin-top: 2rem;
+    color: var(--accent-color); /* หัวข้อสีฟ้า */
+    margin-top: 2.5rem;
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border-mobile);
+    border-bottom: 1px solid var(--border-color);
+    text-shadow: 0 0 10px var(--accent-glow); /* เรืองแสงนิดๆ */
+    position: relative;
+}
+
+.tos-section h2::before {
+    content: '#';
+    color: var(--text-secondary);
+    opacity: 0.3;
+    margin-right: 5px;
 }
 
 .tos-section p {
-    line-height: 1.7;
-    margin-bottom: 1rem;
-    color: var(--text-secondary);
+    line-height: 1.8; /* อ่านง่ายขึ้น */
+    margin-bottom: 1.2rem;
+    color: var(--text-secondary); /* สีเทาอ่อน อ่านสบายตาบนพื้นเข้ม */
+    font-size: 1.05rem;
+}
+
+/* ปรับแต่งสำหรับมือถือ */
+@media (max-width: 768px) {
+    .tos-container {
+        margin: 1.5rem;
+        padding: 1.5rem;
+    }
+    
+    .tos-header h1 {
+        font-size: 2rem;
+    }
+    
+    .tos-section h2 {
+        font-size: 1.5rem;
+    }
 }

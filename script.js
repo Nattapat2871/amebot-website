@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
             'hero_join_discord': 'Join Discord Server',
             'hero_invite_bot': 'Invite Bot',
             'about_title': 'About Me',
-            'about_description': 'Hello! I am Rurina Ame, an intelligent AI assistant created to be more than just an ordinary bot. My core is powered by Google Gemini 1.5 Flash technology, giving me diverse capabilities and making me ready to be both an assistant and a friend to everyone.\n\nKey Features:\n• Welcome-Leave System\n• Anti-Spam System\n• Server Log System\n• Weather Forecast\n• Image Search',
+            'about_description': 'Hello! I am Rurina Ame, an intelligent AI assistant created to be more than just an ordinary bot. My core is powered by Google Gemini 2.0 flash lite technology, giving me diverse capabilities and making me ready to be both an assistant and a friend to everyone.\n\nKey Features:\n• Welcome-Leave System\n• Anti-Spam System\n• Server Log System\n• Weather Forecast\n• Image Search\n• Text To Speech\n• World Chat',
             'bot': 'Bot',
             'statistics': 'Statistics',
             'developers': 'Developers',
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
             'hero_join_discord': 'เข้าร่วม Discord Server',
             'hero_invite_bot': 'เชิญบอท',
             'about_title': 'เกี่ยวกับฉัน',
-            'about_description': 'สวัสดีค่ะ หนูคือ Rurina Ame ผู้ช่วย AI อัจฉริยะที่ถูกสร้างขึ้นมาเพื่อเป็นมากกว่าแค่บอทธรรมดา หัวใจหลักของหนูขับเคลื่อนด้วยเทคโนโลยี Google Gemini 1.5 Flash ทำให้หนูมีความสามารถที่หลากหลายและพร้อมจะเป็นทั้งผู้ช่วยและเพื่อนคุยให้กับทุกคนค่ะ\n\nความสามารถเด่น:\n• ระบบต้อนรับ-อำลา\n• ระบบป้องกันสแปม\n• ระบบบันทึก Log\n• สภาพอากาศ\n• ค้นหารูปภาพ',
+            'about_description': 'สวัสดีค่ะ หนูคือ Rurina Ame ผู้ช่วย AI อัจฉริยะที่ถูกสร้างขึ้นมาเพื่อเป็นมากกว่าแค่บอทธรรมดา หัวใจหลักของหนูขับเคลื่อนด้วยเทคโนโลยี Google Gemini 2.0 flash lite ทำให้หนูมีความสามารถที่หลากหลายและพร้อมจะเป็นทั้งผู้ช่วยและเพื่อนคุยให้กับทุกคนค่ะ\n\nความสามารถเด่น:\n• ระบบต้อนรับ-อำลา\n• ระบบป้องกันสแปม\n• ระบบบันทึก Log\n• สภาพอากาศ\n• ค้นหารูปภาพ\n• อ่านข้อความเป็นเสียง\n• แชทโลก',
             'bot': 'บอท',
             'statistics': 'สถิติ',
             'developers': 'ผู้พัฒนา',
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
             'api_description': 'API นี้ใช้สำหรับดึงข้อมูลผู้ใช้ใน Discord สามารถดึงข้อมูลได้ทุกอย่าง'
         }
     };
-    const botApiEndpoints = [{ apiUrl: 'https://api.ame.nattapat2871.me/v1/user/1141443585737244682', role: 'Main Bot & AI', description: 'The main bot responsible for server management and core functionalities.' }, { apiUrl: 'https://api.ame.nattapat2871.me/v1/user/1141441060044816405', role: 'API Bot' }, { apiUrl: 'https://api.ame.nattapat2871.me/v1/user/1376505105687253072', role: 'Music Bot', description: 'Dedicated to providing high-quality music streams 24/7.'}];
+    const botApiEndpoints = [{ apiUrl: 'https://api.ame.nattapat2871.me/v1/user/1141443585737244682', role: 'Main Bot & AI', description: 'The main bot responsible for server management and core functionalities.' }, { apiUrl: 'https://api.ame.nattapat2871.me/v1/user/1141441060044816405', role: 'API Bot' }, { apiUrl: 'https://api.ame.nattapat2871.me/v1/user/1456946547001655317', role: 'Music Bot', description: 'Dedicated to providing high-quality music streams 24/7.'}];
     const developerApiEndpoints = [
         { apiUrl: 'https://api.ame.nattapat2871.me/v1/user/1007237437627572275', role: 'Lead Developer & Founder' }, { apiUrl: 'https://api.ame.nattapat2871.me/v1/user/741501421936967722', role: 'Consultant' }
     ];
@@ -238,28 +238,58 @@ document.addEventListener('DOMContentLoaded', function () {
             const aiInteractionsEl = document.getElementById('stat-ai-interactions');
             const aiTokensEl = document.getElementById('stat-ai-tokens');
             const apiRequestsEl = document.getElementById('stat-api-requests');
+
+            // URL API ทั้งสองตัว
             const statsApiUrl = 'https://rurina-ame-bots.onrender.com/api/advance/system/';
-            const apiUsageUrl = 'https://api.ame.nattapat2871.me/advance/system';
+            const apiUsageUrl = 'https://api.ame.nattapat2871.me/stats'; // URL ใหม่
+
             try {
+                // เรียก Fetch พร้อมกันทั้ง 2 Link
                 const [statsResponse, apiUsageResponse] = await Promise.all([
                     fetch(statsApiUrl),
                     fetch(apiUsageUrl)
                 ]);
-                if (!statsResponse.ok || !apiUsageResponse.ok) { throw new Error(`API request failed`); }
-                const statsData = await statsResponse.json();
-                const apiUsageData = await apiUsageResponse.json();
-                if (serverCountEl) serverCountEl.textContent = statsData.bot_info.server_count.toLocaleString('en-US');
-                if (userCountEl) userCountEl.textContent = statsData.bot_info.user_count.toLocaleString('en-US');
-                if (aiInteractionsEl) aiInteractionsEl.textContent = statsData.ai_stats.total_interactions.toLocaleString('en-US');
-                if (aiTokensEl) {
-                    const tokens = Math.round(statsData.ai_stats.estimated_tokens_processed);
-                    aiTokensEl.textContent = `(${tokens.toLocaleString('en-US')} Tokens Processed)`;
+
+                // 1. จัดการข้อมูล Bot Info และ AI Stats
+                if (statsResponse.ok) {
+                    const statsData = await statsResponse.json();
+                    
+                    if (serverCountEl && statsData.bot_info) {
+                        serverCountEl.textContent = statsData.bot_info.server_count.toLocaleString('en-US');
+                    }
+                    if (userCountEl && statsData.bot_info) {
+                        userCountEl.textContent = statsData.bot_info.user_count.toLocaleString('en-US');
+                    }
+                    if (aiInteractionsEl && statsData.ai_stats) {
+                        aiInteractionsEl.textContent = statsData.ai_stats.total_interactions.toLocaleString('en-US');
+                    }
+                    if (aiTokensEl && statsData.ai_stats) {
+                        const tokens = Math.round(statsData.ai_stats.estimated_tokens_processed);
+                        aiTokensEl.textContent = `(${tokens.toLocaleString('en-US')} Tokens Processed)`;
+                    }
+                } else {
+                    console.error(`Stats API Error: ${statsResponse.status}`);
                 }
-                if (apiRequestsEl) apiRequestsEl.textContent = apiUsageData.api_usage.total_requests.toLocaleString('en-US');
+
+                // 2. จัดการข้อมูล API Usage (Ame API)
+                if (apiUsageResponse.ok) {
+                    const apiUsageData = await apiUsageResponse.json();
+                    
+                    // เข้าถึง path: "Ame API" -> "api_usage" -> "total_requests"
+                    if (apiRequestsEl && apiUsageData['Ame API'] && apiUsageData['Ame API'].api_usage) {
+                        apiRequestsEl.textContent = apiUsageData['Ame API'].api_usage.total_requests.toLocaleString('en-US');
+                    }
+                } else {
+                    console.error(`API Usage Error: ${apiUsageResponse.status}`);
+                }
+
             } catch (error) {
                 console.error('Failed to fetch statistics:', error);
                 const statsContainer = document.getElementById('statistics-cards-container');
-                if (statsContainer) statsContainer.innerHTML = '<p style="color: #999; text-align: center;">Could not load statistics data.</p>';
+                if (statsContainer) {
+                   // กรณีโหลดไม่ได้เลย อาจจะแสดงข้อความแจ้งเตือน หรือปล่อยให้เป็น ... ตาม html เดิม
+                   console.log("Could not load statistics data.");
+                }
             }
         };
 
