@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
             'bot': 'Bot',
             'statistics': 'Statistics',
             'developers': 'Developers',
-            '': 'API',
+            'api': 'API',
             'api_description': 'This API is used to fetch user data from Discord, capable of retrieving all available information.'
         },
         'TH': {
@@ -233,8 +233,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const aiTokensEl = document.getElementById('stat-ai-tokens');
             const apiRequestsEl = document.getElementById('stat-api-requests');
 
-            // แก้ไขปัญหา Mixed Content: เปลี่ยนเป็น HTTPS หรือใช้ Proxy
-            const statsApiUrl = 'https://ame-api.nattapat2871.me/v1/stats/system'; // แนะนำให้ใช้ HTTPS endpoint ของคุณ
+            // ใช้ URL เดิมที่คุณให้มา เพราะมีข้อมูลครบ (หากหน้าเว็บเป็น HTTPS อาจโดนบล็อก ถ้าเซิร์ฟเวอร์ไม่มี SSL)
+            const statsApiUrl = 'http://43.228.86.233:10004/api/advance/system/';
             const apiUsageUrl = 'https://ame-api.nattapat2871.me/stats';
 
             try {
@@ -500,7 +500,7 @@ document.addEventListener('DOMContentLoaded', function () {
         renderBotProfiles();
         renderDeveloperProfiles();
         renderStatistics();
-        setupTester();
+        setupApiTester(); // แก้ไขจาก setupTester เป็น setupApiTester ให้ตรงกับชื่อที่ประกาศไว้
         setupWallpaperSlideshow();
     }
 });
