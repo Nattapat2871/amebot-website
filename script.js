@@ -233,23 +233,37 @@ document.addEventListener('DOMContentLoaded', function () {
     const aiTokensEl = document.getElementById('stat-ai-tokens');
     const apiRequestsEl = document.getElementById('stat-api-requests');
 
-    // ใช้ HTTPS Proxy ครอบ URL ที่เป็น HTTP เพื่อหลีกเลี่ยง Mixed Content Block
-    const targetUrl = 'http://43.228.86.233:10004/api/advance/system/';
-    const statsApiUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
-    
-    const apiUsageUrl = 'https://ame-api.nattapat2871.me/stats'; // ตัวนี้เป็น HTTPS อยู่แล้ว ไม่ต้องแก้
+    // อัปเดต URL เป็น HTTPS ตามที่คุณตั้งค่าใหม่
+    const statsApiUrl = 'https://rurina-ame-bot.nattapat2871.me/api/advance/system/';
+    const apiUsageUrl = 'https://ame-api.nattapat2871.me/stats';
 
     try {
         const [statsResponse, apiUsageResponse] = await Promise.all([
-            fetch(statsApiUrl).catch((err) => {
-                console.error('Stats API fetch error:', err);
-                return { ok: false };
-            }),
-            fetch(apiUsageUrl).catch((err) => {
-                console.error('API Usage fetch error:', err);
-                return { ok: false };
-            })
+            fetch(statsApiUrl).catch(() => ({ ok: false })),
+            fetch(apiUsageUrl).catch(() => ({ ok: false }))
         ]);
+
+        if (statsResponse.ok) {
+            const statsData = await statsResponse.json();
+            if (serverCountEl && statsData.bot_info) serverCountEl.textContent = statsData.bot_info.server_count.toLocaleString();
+            if (userCountEl && statsData.bot_info) userCountEl.textContent = statsData.bot_info.user_count.toLocaleString();
+            if (aiInteractionsEl && statsData.ai_stats) aiInteractionsEl.textContent = statsData.ai_stats.total_interactions.toLocaleString();
+            if (aiTokensEl && statsData.ai_stats) {
+                const tokens = Math.round(statsData.ai_stats.estimated_tokens_processed);
+                aiTokensEl.textContent = `(${tokens.toLocaleString()} Tokens Processed)`;
+            }
+        }
+
+        if (apiUsageResponse.ok) {
+            const apiUsageData = await apiUsageResponse.json();
+            if (apiRequestsEl && apiUsageData['Ame API']?.api_usage) {
+                apiRequestsEl.textContent = apiUsageData['Ame API'].api_usage.total_requests.toLocaleString();
+            }
+        }
+    } catch (error) {
+        console.error('Failed to fetch statistics:', error);
+    }
+};
 
         if (statsResponse.ok) {
             const statsData = await statsResponse.json();
