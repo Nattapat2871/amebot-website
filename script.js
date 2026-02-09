@@ -50,9 +50,9 @@ document.addEventListener('DOMContentLoaded', function () {
             'api_description': 'API นี้ใช้สำหรับดึงข้อมูลผู้ใช้ใน Discord สามารถดึงข้อมูลได้ทุกอย่าง'
         }
     };
-    const botApiEndpoints = [{ apiUrl: 'https://api.ame.nattapat2871.me/v1/user/1141443585737244682', role: 'Main Bot & AI', description: 'The main bot responsible for server management and core functionalities.' }, { apiUrl: 'https://api.ame.nattapat2871.me/v1/user/1141441060044816405', role: 'API Bot' }, { apiUrl: 'https://api.ame.nattapat2871.me/v1/user/1456946547001655317', role: 'Music Bot', description: 'Dedicated to providing high-quality music streams 24/7.'}];
+    const botApiEndpoints = [{ apiUrl: 'https://ame-api.nattapat2871.me/v1/user/1141443585737244682', role: 'Main Bot & AI', description: 'The main bot responsible for server management and core functionalities.' }, { apiUrl: 'https://ame-api.nattapat2871.me/v1/user/1141441060044816405', role: 'API Bot' }, { apiUrl: 'https://ame-api.nattapat2871.me/v1/user/1456946547001655317', role: 'Music Bot', description: 'Dedicated to providing high-quality music streams 24/7.'}];
     const developerApiEndpoints = [
-        { apiUrl: 'https://api.ame.nattapat2871.me/v1/user/1007237437627572275', role: 'Lead Developer & Founder' }, { apiUrl: 'https://api.ame.nattapat2871.me/v1/user/741501421936967722', role: 'Consultant' }
+        { apiUrl: 'https://ame-api.nattapat2871.me/v1/user/1007237437627572275', role: 'Lead Developer & Founder' }, { apiUrl: 'https://ame-api.nattapat2871.me/v1/user/741501421936967722', role: 'Consultant' }
     ];
 
     // -------------------------------------------------------------------------
@@ -240,8 +240,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const apiRequestsEl = document.getElementById('stat-api-requests');
 
             // URL API ทั้งสองตัว
-            const statsApiUrl = 'https://rurina-ame-bots.onrender.com/api/advance/system/';
-            const apiUsageUrl = 'https://api.ame.nattapat2871.me/stats'; // URL ใหม่
+            const statsApiUrl = 'http://43.228.86.233:10004/api/advance/system/';
+            const apiUsageUrl = 'https://ame-api.nattapat2871.me/stats'; // URL ใหม่
 
             try {
                 // เรียก Fetch พร้อมกันทั้ง 2 Link
@@ -320,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const apiTesterContainer = document.querySelector('.api-tester-container');
                 if (apiTesterContainer) apiTesterContainer.classList.add('loading');
                 try {
-                    const response = await fetch(`https://api.ame.nattapat2871.me/v1/user/${userId}`);
+                    const response = await fetch(`https://ame-api.nattapat2871.me/v1/user/${userId}`);
                     const data = await response.json();
                     if (!response.ok) { throw data; }
                     if (jsonOutputEl) {
