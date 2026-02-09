@@ -1,5 +1,5 @@
 // =========================================================================
-// SCRIPT.JS - AMEBOT WEBSITE (Full Function Implementation)
+// SCRIPT.JS - AMEBOT WEBSITE (Full Function Implementation - HTTPS Update)
 // =========================================================================
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // -------------------------------------------------------------------------
     // SECTION 3: MAIN APPLICATION LOGIC (runApp)
     // -------------------------------------------------------------------------
-    function runApp() {
+    async function runApp() {
         // --- ELEMENT SELECTORS ---
         const hamburgerMenu = document.getElementById('hamburger-menu');
         const mobileMenu = document.getElementById('mobile-menu');
@@ -227,65 +227,43 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         const renderStatistics = async () => {
-    const serverCountEl = document.getElementById('stat-servers-count');
-    const userCountEl = document.getElementById('stat-users-count');
-    const aiInteractionsEl = document.getElementById('stat-ai-interactions');
-    const aiTokensEl = document.getElementById('stat-ai-tokens');
-    const apiRequestsEl = document.getElementById('stat-api-requests');
+            const serverCountEl = document.getElementById('stat-servers-count');
+            const userCountEl = document.getElementById('stat-users-count');
+            const aiInteractionsEl = document.getElementById('stat-ai-interactions');
+            const aiTokensEl = document.getElementById('stat-ai-tokens');
+            const apiRequestsEl = document.getElementById('stat-api-requests');
 
-    // อัปเดต URL เป็น HTTPS ตามที่คุณตั้งค่าใหม่
-    const statsApiUrl = 'https://rurina-ame-bot.nattapat2871.me/api/advance/system/';
-    const apiUsageUrl = 'https://ame-api.nattapat2871.me/stats';
+            const statsApiUrl = 'https://rurina-ame-bot.nattapat2871.me/api/advance/system/';
+            const apiUsageUrl = 'https://ame-api.nattapat2871.me/stats';
 
-    try {
-        const [statsResponse, apiUsageResponse] = await Promise.all([
-            fetch(statsApiUrl).catch(() => ({ ok: false })),
-            fetch(apiUsageUrl).catch(() => ({ ok: false }))
-        ]);
+            try {
+                const [statsResponse, apiUsageResponse] = await Promise.all([
+                    fetch(statsApiUrl).catch(() => ({ ok: false })),
+                    fetch(apiUsageUrl).catch(() => ({ ok: false }))
+                ]);
 
-        if (statsResponse.ok) {
-            const statsData = await statsResponse.json();
-            if (serverCountEl && statsData.bot_info) serverCountEl.textContent = statsData.bot_info.server_count.toLocaleString();
-            if (userCountEl && statsData.bot_info) userCountEl.textContent = statsData.bot_info.user_count.toLocaleString();
-            if (aiInteractionsEl && statsData.ai_stats) aiInteractionsEl.textContent = statsData.ai_stats.total_interactions.toLocaleString();
-            if (aiTokensEl && statsData.ai_stats) {
-                const tokens = Math.round(statsData.ai_stats.estimated_tokens_processed);
-                aiTokensEl.textContent = `(${tokens.toLocaleString()} Tokens Processed)`;
+                if (statsResponse.ok) {
+                    const statsData = await statsResponse.json();
+                    if (serverCountEl && statsData.bot_info) serverCountEl.textContent = statsData.bot_info.server_count.toLocaleString();
+                    if (userCountEl && statsData.bot_info) userCountEl.textContent = statsData.bot_info.user_count.toLocaleString();
+                    if (aiInteractionsEl && statsData.ai_stats) aiInteractionsEl.textContent = statsData.ai_stats.total_interactions.toLocaleString();
+                    if (aiTokensEl && statsData.ai_stats) {
+                        const tokens = Math.round(statsData.ai_stats.estimated_tokens_processed);
+                        aiTokensEl.textContent = `(${tokens.toLocaleString()} Tokens Processed)`;
+                    }
+                }
+
+                if (apiUsageResponse.ok) {
+                    const apiUsageData = await apiUsageResponse.json();
+                    if (apiRequestsEl && apiUsageData['Ame API']?.api_usage) {
+                        apiRequestsEl.textContent = apiUsageData['Ame API'].api_usage.total_requests.toLocaleString();
+                    }
+                }
+            } catch (error) {
+                console.error('Failed to fetch statistics:', error);
             }
-        }
+        };
 
-        if (apiUsageResponse.ok) {
-            const apiUsageData = await apiUsageResponse.json();
-            if (apiRequestsEl && apiUsageData['Ame API']?.api_usage) {
-                apiRequestsEl.textContent = apiUsageData['Ame API'].api_usage.total_requests.toLocaleString();
-            }
-        }
-    } catch (error) {
-        console.error('Failed to fetch statistics:', error);
-    }
-};
-
-        if (statsResponse.ok) {
-            const statsData = await statsResponse.json();
-            if (serverCountEl && statsData.bot_info) serverCountEl.textContent = statsData.bot_info.server_count.toLocaleString();
-            if (userCountEl && statsData.bot_info) userCountEl.textContent = statsData.bot_info.user_count.toLocaleString();
-            if (aiInteractionsEl && statsData.ai_stats) aiInteractionsEl.textContent = statsData.ai_stats.total_interactions.toLocaleString();
-            if (aiTokensEl && statsData.ai_stats) {
-                const tokens = Math.round(statsData.ai_stats.estimated_tokens_processed);
-                aiTokensEl.textContent = `(${tokens.toLocaleString()} Tokens Processed)`;
-            }
-        }
-
-        if (apiUsageResponse.ok) {
-            const apiUsageData = await apiUsageResponse.json();
-            if (apiRequestsEl && apiUsageData['Ame API']?.api_usage) {
-                apiRequestsEl.textContent = apiUsageData['Ame API'].api_usage.total_requests.toLocaleString();
-            }
-        }
-    } catch (error) {
-        console.error('Failed to fetch statistics:', error);
-    }
-};
         const setupApiTester = () => {
             const inputEl = document.getElementById('api-user-id-input');
             const jsonOutputEl = document.getElementById('api-json-output');
@@ -520,8 +498,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         renderBotProfiles();
         renderDeveloperProfiles();
-        renderStatistics();
-        setupApiTester(); // แก้ไขจาก setupTester เป็น setupApiTester ให้ตรงกับชื่อที่ประกาศไว้
+        // เรียก renderStatistics โดยไม่ต้องใส่ await ข้างหน้า เพราะเราไม่ได้ต้องการหยุดการทำงานส่วนอื่น
+        renderStatistics(); 
+        setupApiTester(); 
         setupWallpaperSlideshow();
     }
 });
