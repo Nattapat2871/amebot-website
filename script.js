@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
             'bot': 'Bot',
             'statistics': 'Statistics',
             'developers': 'Developers',
-            'api': 'API',
+            '': 'API',
             'api_description': 'This API is used to fetch user data from Discord, capable of retrieving all available information.'
         },
         'TH': {
@@ -126,10 +126,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const renderDeveloperProfiles = () => {
             const container = document.getElementById('developer-cards-container');
-            if (!container) {
-                console.error("Developer cards container not found!");
-                return;
-            }
+            if (!container) return;
             container.innerHTML = '<p style="color: #c4c4c4; text-align: center;">Fetching developer data...</p>';
             fetchApiData(developerApiEndpoints).then(users => {
                 container.innerHTML = '';
@@ -193,10 +190,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const renderBotProfiles = () => {
             const container = document.getElementById('bot-cards-container');
-            if (!container) {
-                console.error("Bot cards container not found!");
-                return;
-            }
+            if (!container) return;
             container.innerHTML = '<p style="color: #e4e4e4; text-align: center;">Fetching bot data...</p>';
             fetchApiData(botApiEndpoints).then(bots => {
                 container.innerHTML = '';
@@ -239,57 +233,35 @@ document.addEventListener('DOMContentLoaded', function () {
             const aiTokensEl = document.getElementById('stat-ai-tokens');
             const apiRequestsEl = document.getElementById('stat-api-requests');
 
-            // URL API ทั้งสองตัว
-            const statsApiUrl = 'http://43.228.86.233:10004/api/advance/system/';
-            const apiUsageUrl = 'https://ame-api.nattapat2871.me/stats'; // URL ใหม่
+            // แก้ไขปัญหา Mixed Content: เปลี่ยนเป็น HTTPS หรือใช้ Proxy
+            const statsApiUrl = 'https://ame-api.nattapat2871.me/v1/stats/system'; // แนะนำให้ใช้ HTTPS endpoint ของคุณ
+            const apiUsageUrl = 'https://ame-api.nattapat2871.me/stats';
 
             try {
-                // เรียก Fetch พร้อมกันทั้ง 2 Link
                 const [statsResponse, apiUsageResponse] = await Promise.all([
-                    fetch(statsApiUrl),
-                    fetch(apiUsageUrl)
+                    fetch(statsApiUrl).catch(() => ({ ok: false })),
+                    fetch(apiUsageUrl).catch(() => ({ ok: false }))
                 ]);
 
-                // 1. จัดการข้อมูล Bot Info และ AI Stats
                 if (statsResponse.ok) {
                     const statsData = await statsResponse.json();
-                    
-                    if (serverCountEl && statsData.bot_info) {
-                        serverCountEl.textContent = statsData.bot_info.server_count.toLocaleString('en-US');
-                    }
-                    if (userCountEl && statsData.bot_info) {
-                        userCountEl.textContent = statsData.bot_info.user_count.toLocaleString('en-US');
-                    }
-                    if (aiInteractionsEl && statsData.ai_stats) {
-                        aiInteractionsEl.textContent = statsData.ai_stats.total_interactions.toLocaleString('en-US');
-                    }
+                    if (serverCountEl && statsData.bot_info) serverCountEl.textContent = statsData.bot_info.server_count.toLocaleString();
+                    if (userCountEl && statsData.bot_info) userCountEl.textContent = statsData.bot_info.user_count.toLocaleString();
+                    if (aiInteractionsEl && statsData.ai_stats) aiInteractionsEl.textContent = statsData.ai_stats.total_interactions.toLocaleString();
                     if (aiTokensEl && statsData.ai_stats) {
                         const tokens = Math.round(statsData.ai_stats.estimated_tokens_processed);
-                        aiTokensEl.textContent = `(${tokens.toLocaleString('en-US')} Tokens Processed)`;
+                        aiTokensEl.textContent = `(${tokens.toLocaleString()} Tokens Processed)`;
                     }
-                } else {
-                    console.error(`Stats API Error: ${statsResponse.status}`);
                 }
 
-                // 2. จัดการข้อมูล API Usage (Ame API)
                 if (apiUsageResponse.ok) {
                     const apiUsageData = await apiUsageResponse.json();
-                    
-                    // เข้าถึง path: "Ame API" -> "api_usage" -> "total_requests"
-                    if (apiRequestsEl && apiUsageData['Ame API'] && apiUsageData['Ame API'].api_usage) {
-                        apiRequestsEl.textContent = apiUsageData['Ame API'].api_usage.total_requests.toLocaleString('en-US');
+                    if (apiRequestsEl && apiUsageData['Ame API']?.api_usage) {
+                        apiRequestsEl.textContent = apiUsageData['Ame API'].api_usage.total_requests.toLocaleString();
                     }
-                } else {
-                    console.error(`API Usage Error: ${apiUsageResponse.status}`);
                 }
-
             } catch (error) {
                 console.error('Failed to fetch statistics:', error);
-                const statsContainer = document.getElementById('statistics-cards-container');
-                if (statsContainer) {
-                   // กรณีโหลดไม่ได้เลย อาจจะแสดงข้อความแจ้งเตือน หรือปล่อยให้เป็น ... ตาม html เดิม
-                   console.log("Could not load statistics data.");
-                }
             }
         };
 
@@ -309,30 +281,33 @@ document.addEventListener('DOMContentLoaded', function () {
             const fetchApiUserData = async (userId) => {
                 if (!userId || userId.length < 17) {
                     if (jsonOutputEl) jsonOutputEl.textContent = '{ "message": "Please enter a valid Discord User ID." }';
-                    if (jsonOutputEl) Prism.highlightElement(jsonOutputEl);
+                    if (window.Prism) Prism.highlightElement(jsonOutputEl);
                     if (simpleDisplayContainer) simpleDisplayContainer.classList.add('hidden');
                     return;
                 }
                 if (jsonOutputEl) {
                     jsonOutputEl.textContent = 'Fetching data...';
-                    Prism.highlightElement(jsonOutputEl);
+                    if (window.Prism) Prism.highlightElement(jsonOutputEl);
                 }
                 const apiTesterContainer = document.querySelector('.api-tester-container');
                 if (apiTesterContainer) apiTesterContainer.classList.add('loading');
                 try {
                     const response = await fetch(`https://ame-api.nattapat2871.me/v1/user/${userId}`);
                     const data = await response.json();
-                    if (!response.ok) { throw data; }
+                    if (!response.ok) throw data;
+                    
                     if (jsonOutputEl) {
                         jsonOutputEl.textContent = JSON.stringify(data, null, 2);
-                        Prism.highlightElement(jsonOutputEl);
+                        if (window.Prism) Prism.highlightElement(jsonOutputEl);
                     }
+                    
                     const user = data.ame.user;
                     const profile = data.ame;
 
                     if (avatarEl) {
-                        const avatarUrl = user.avatar.startsWith('a_') ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif?size=128` : `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
-                        avatarEl.src = avatarUrl;
+                        avatarEl.src = user.avatar.startsWith('a_') 
+                            ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif?size=128` 
+                            : `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
                     }
 
                     if (avatarDecorationEl) {
@@ -345,8 +320,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
 
                     if (statusIndicatorEl) {
-                        statusIndicatorEl.className = 'status-indicator';
-                        statusIndicatorEl.classList.add(profile.discord_status);
+                        statusIndicatorEl.className = `status-indicator ${profile.discord_status}`;
                     }
                     if (usernameEl) usernameEl.textContent = user.username;
 
@@ -357,7 +331,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             if (user.primary_guild.badge && user.primary_guild.identity_guild_id) {
                                 const guildBadge = document.createElement('img');
                                 guildBadge.src = `https://cdn.discordapp.com/clan-badges/${user.primary_guild.identity_guild_id}/${user.primary_guild.badge}.png?size=24`;
-                                guildBadge.alt = `Guild Badge`;
                                 guildBadge.className = 'guild-badge-icon';
                                 guildTagEl.appendChild(guildBadge);
                             }
@@ -371,15 +344,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     if (badgesContainerEl) {
                         badgesContainerEl.innerHTML = '';
-                        if (profile.badges && profile.badges.length > 0) {
-                            profile.badges.forEach(badge => {
-                                const badgeImg = document.createElement('img');
-                                badgeImg.src = `https://cdn.discordapp.com/badge-icons/${badge.icon}.png`;
-                                badgeImg.title = badge.description;
-                                badgeImg.className = 'badge-image';
-                                badgesContainerEl.appendChild(badgeImg);
-                            });
-                        }
+                        profile.badges?.forEach(badge => {
+                            const badgeImg = document.createElement('img');
+                            badgeImg.src = `https://cdn.discordapp.com/badge-icons/${badge.icon}.png`;
+                            badgeImg.title = badge.description;
+                            badgeImg.className = 'badge-image';
+                            badgesContainerEl.appendChild(badgeImg);
+                        });
                     }
 
                     if (customStatusEl) {
@@ -389,44 +360,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     if (activityCardEl) {
                         activityCardEl.innerHTML = '';
-                        const mainActivity = profile.activities.find(act => act.type === 0 || act.type === 2 || act.type === 3);
+                        const mainActivity = profile.activities.find(act => [0, 2, 3].includes(act.type));
                         if (mainActivity) {
                             activityCardEl.style.display = 'flex';
                             const statusPrefix = getActivityStatusPrefix(mainActivity.type);
-                            const largeImgUrl = mainActivity.assets?.large_image?.startsWith('mp:external') ? `https://media.discordapp.net/${mainActivity.assets.large_image.replace('mp:', '')}` : mainActivity.assets?.large_image;
-                            const largeImg = largeImgUrl ? `<img src="${largeImgUrl}" alt="Activity" class="activity-icon" onerror="this.onerror=null;this.src='asset/loading.gif';">` : '<div class="activity-icon-placeholder">?</div>';
+                            const largeImgUrl = mainActivity.assets?.large_image?.startsWith('mp:external') 
+                                ? `https://media.discordapp.net/${mainActivity.assets.large_image.replace('mp:', '')}` 
+                                : mainActivity.assets?.large_image;
+                            const largeImg = largeImgUrl ? `<img src="${largeImgUrl}" class="activity-icon" onerror="this.src='asset/loading.gif';">` : '<div class="activity-icon-placeholder">?</div>';
                             activityCardEl.innerHTML = `${largeImg}<div class="activity-details-container"><strong>${statusPrefix}${parseDiscordEmojis(mainActivity.name)}</strong>${mainActivity.details ? `<span>${parseDiscordEmojis(mainActivity.details)}</span>` : ''}${mainActivity.state ? `<span>${parseDiscordEmojis(mainActivity.state)}</span>` : ''}</div>`;
                         } else {
                             activityCardEl.style.display = 'none';
                         }
                     }
-
                     if (simpleDisplayContainer) simpleDisplayContainer.classList.remove('hidden');
-
                 } catch (error) {
                     console.error('API Tester Error:', error);
-                    if (jsonOutputEl) {
-                        jsonOutputEl.textContent = JSON.stringify(error, null, 2);
-                        Prism.highlightElement(jsonOutputEl);
-                    }
-                    if (simpleDisplayContainer) simpleDisplayContainer.classList.add('hidden');
                 } finally {
                     if (apiTesterContainer) apiTesterContainer.classList.remove('loading');
                 }
             };
+
             if (inputEl) {
                 const debouncedFetch = debounce((event) => { fetchApiUserData(event.target.value.trim()); }, 500);
                 inputEl.addEventListener('input', debouncedFetch);
             }
         };
 
-
         const setupWallpaperSlideshow = () => {
             const wallpaperBg1 = document.getElementById('wallpaper-bg-1');
             const wallpaperBg2 = document.getElementById('wallpaper-bg-2');
             if (!wallpaperBg1 || !wallpaperBg2) return;
-
-            // กรองเอารูปภาพที่ไม่ต้องการออก (loading.gif, amebot.png)
             const wallpaperImages = imageUrls.slice(2);
             if (wallpaperImages.length === 0) return;
 
@@ -434,50 +398,39 @@ document.addEventListener('DOMContentLoaded', function () {
             let isBg1Active = true;
 
             const changeWallpaper = () => {
-                // คำนวณ index ของรูปภาพถัดไป ให้วนลูป
                 currentImageIndex = (currentImageIndex + 1) % wallpaperImages.length;
                 const nextImageUrl = wallpaperImages[currentImageIndex];
-
                 if (isBg1Active) {
-                    // ถ้า bg1 แสดงอยู่ ให้โหลดรูปใหม่ใน bg2 แล้วสลับ
                     wallpaperBg2.style.backgroundImage = `url('${nextImageUrl}')`;
                     wallpaperBg2.style.opacity = 1;
                     wallpaperBg1.style.opacity = 0;
                 } else {
-                    // ถ้า bg2 แสดงอยู่ ให้โหลดรูปใหม่ใน bg1 แล้วสลับ
                     wallpaperBg1.style.backgroundImage = `url('${nextImageUrl}')`;
                     wallpaperBg1.style.opacity = 1;
                     wallpaperBg2.style.opacity = 0;
                 }
-
-                // สลับสถานะ active
                 isBg1Active = !isBg1Active;
             };
 
-            // ตั้งค่ารูปแรก
             wallpaperBg1.style.backgroundImage = `url('${wallpaperImages[0]}')`;
             wallpaperBg1.style.opacity = 1;
-            wallpaperBg2.style.opacity = 0;
-
-            // เริ่มการสลับรูปทุกๆ 7 วินาที
             setInterval(changeWallpaper, 7000);
         };
 
-        // --- UI & UTILITY FUNCTIONS ---
         const updateTabContent = (clickedLink) => {
             const currentActiveLink = document.querySelector('.secondary-nav-link.active');
             if (currentActiveLink === clickedLink) return;
-            const oldActiveLink = currentActiveLink;
-            const newActiveLink = clickedLink;
-            if (oldActiveLink) oldActiveLink.classList.remove('active');
-            if (newActiveLink) newActiveLink.classList.add('active');
+            if (currentActiveLink) currentActiveLink.classList.remove('active');
+            clickedLink.classList.add('active');
+            
             const oldSection = document.querySelector('.content-section.is-active');
-            const newSectionId = newActiveLink.getAttribute('href');
-            const newSection = document.querySelector(newSectionId);
-            if (!oldSection || !newSection || oldSection === newSection) return;
-            const oldIndex = Array.from(secondaryNavLinks).indexOf(oldActiveLink);
-            const newIndex = Array.from(secondaryNavLinks).indexOf(newActiveLink);
+            const newSection = document.querySelector(clickedLink.getAttribute('href'));
+            if (!oldSection || !newSection) return;
+
+            const oldIndex = Array.from(secondaryNavLinks).indexOf(currentActiveLink);
+            const newIndex = Array.from(secondaryNavLinks).indexOf(clickedLink);
             const isMovingRight = newIndex > oldIndex;
+
             oldSection.classList.add('is-transitioning-out');
             oldSection.classList.remove('is-active');
             newSection.style.transform = isMovingRight ? 'translateX(100%)' : 'translateX(-100%)';
@@ -486,35 +439,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 newSection.style.transform = 'translateX(0)';
                 oldSection.style.transform = isMovingRight ? 'translateX(-100%)' : 'translateX(100%)';
             });
-            oldSection.addEventListener('transitionend', () => { oldSection.classList.remove('is-transitioning-out'); }, { once: true });
-        };
-
-        const setInitialTab = () => {
-            const initialActiveLink = document.querySelector('.secondary-nav-link[href="#statistics"]');
-            if (initialActiveLink) {
-                initialActiveLink.classList.add('active');
-                const initialSectionId = initialActiveLink.getAttribute('href');
-                const initialSection = document.querySelector(initialSectionId);
-                if (initialSection) {
-                    initialSection.style.transition = 'none';
-                    initialSection.classList.add('is-active');
-                    setTimeout(() => { initialSection.style.transition = ''; }, 50);
-                }
-            }
         };
 
         const setLanguage = (lang) => {
             if (!translations[lang]) return;
             document.querySelectorAll('[data-translate-key]').forEach(el => {
-                const key = el.dataset.translateKey;
-                const translation = translations[lang][key];
+                const translation = translations[lang][el.dataset.translateKey];
                 if (translation) {
                     const span = el.querySelector('span');
-                    if (span && !el.classList.contains('lang-option')) {
-                        span.textContent = translation;
-                    } else {
-                        el.textContent = translation;
-                    }
+                    if (span && !el.classList.contains('lang-option')) span.textContent = translation;
+                    else el.textContent = translation;
                 }
             });
             document.documentElement.lang = lang;
@@ -522,79 +456,51 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         const populateMobileMenu = () => {
-            const desktopLinks = document.querySelectorAll('.nav-center .nav-links li a');
-            if (mobileMenu) {
-                mobileMenu.innerHTML = '';
-                desktopLinks.forEach(link => {
-                    const newLink = link.cloneNode(true);
-                    mobileMenu.appendChild(newLink);
-                });
-            }
+            if (!mobileMenu) return;
+            mobileMenu.innerHTML = '';
+            document.querySelectorAll('.nav-center .nav-links li a').forEach(link => {
+                mobileMenu.appendChild(link.cloneNode(true));
+            });
         };
 
         const toggleMobileMenu = () => {
-            if (mobileMenu && overlay && hamburgerMenu) {
-                const isMenuOpen = mobileMenu.classList.toggle('show');
-                overlay.classList.toggle('show');
-                hamburgerMenu.classList.toggle('is-active');
-                document.body.classList.toggle('no-scroll', isMenuOpen);
-            }
+            const isMenuOpen = mobileMenu.classList.toggle('show');
+            overlay.classList.toggle('show');
+            hamburgerMenu.classList.toggle('is-active');
+            document.body.classList.toggle('no-scroll', isMenuOpen);
         };
 
-        // --- EVENT LISTENERS ---
-        if (secondaryNavLinks) {
-            secondaryNavLinks.forEach(link => {
-                link.addEventListener('click', (e) => { e.preventDefault(); updateTabContent(link); });
-            });
-        }
-        document.querySelectorAll('.nav-link-disabled').forEach(link => { link.addEventListener('click', (event) => event.preventDefault()); });
+        // --- INIT ---
+        if (secondaryNavLinks) secondaryNavLinks.forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); updateTabContent(link); }));
         if (hamburgerMenu) hamburgerMenu.addEventListener('click', (e) => { e.stopPropagation(); toggleMobileMenu(); });
-        if (overlay) overlay.addEventListener('click', () => { if (mobileMenu && mobileMenu.classList.contains('show')) toggleMobileMenu(); });
+        if (overlay) overlay.addEventListener('click', () => { if (mobileMenu.classList.contains('show')) toggleMobileMenu(); });
         if (langButton) langButton.addEventListener('click', (e) => { e.stopPropagation(); langSwitcher.classList.toggle('open'); });
+        
         document.querySelectorAll('.lang-option').forEach(option => {
             option.addEventListener('click', (e) => {
                 e.preventDefault();
-                const lang = option.dataset.lang;
-                const flagSrc = option.dataset.flagSrc;
-                if (lang && flagSrc) {
-                    const currentFlag = document.getElementById('current-flag');
-                    const currentLangText = document.getElementById('current-lang-text');
-                    if (currentFlag) currentFlag.src = flagSrc;
-                    if (currentLangText) currentLangText.textContent = lang;
-                    setLanguage(lang);
-                    if (langSwitcher) langSwitcher.classList.remove('open');
-                }
-            });
-        });
-        document.addEventListener('click', (e) => {
-            if (langSwitcher && langSwitcher.classList.contains('open') && !langSwitcher.contains(e.target)) {
+                const { lang, flagSrc } = option.dataset;
+                document.getElementById('current-flag').src = flagSrc;
+                document.getElementById('current-lang-text').textContent = lang;
+                setLanguage(lang);
                 langSwitcher.classList.remove('open');
-            }
-        });
-        if (mobileMenu) {
-            mobileMenu.addEventListener('click', (e) => {
-                if (e.target.tagName === 'A') {
-                    toggleMobileMenu();
-                }
             });
-        }
+        });
 
-        // --- INITIAL SETUP CALLS ---
         populateMobileMenu();
         const preferredLang = localStorage.getItem('preferredLanguage') || 'EN';
-        const initialLangOption = document.querySelector(`.lang-option[data-lang="${preferredLang}"]`);
-        if (initialLangOption) {
-            const currentFlag = document.getElementById('current-flag');
-            const currentLangText = document.getElementById('current-lang-text');
-            if (currentFlag) currentFlag.src = initialLangOption.dataset.flagSrc;
-            if (currentLangText) currentLangText.textContent = preferredLang;
-        }
         setLanguage(preferredLang);
-        setInitialTab();
+        
+        const initialTab = document.querySelector('.secondary-nav-link[href="#statistics"]');
+        if (initialTab) {
+            initialTab.classList.add('active');
+            document.querySelector('#statistics').classList.add('is-active');
+        }
+
         renderBotProfiles();
         renderDeveloperProfiles();
         renderStatistics();
-        setupApiTester();
+        setupTester();
         setupWallpaperSlideshow();
     }
 });
